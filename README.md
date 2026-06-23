@@ -97,14 +97,17 @@ python lib/consolidate.py --all
 
 ## ÉTAPE 2 — Créer les 3 Views SQL dans Dremio
 
-Copie-colle ces queries dans l'éditeur SQL de Dremio.
+> 📍 **Chemin Dremio cible :**  
+> `INTERNS > Data_Management_Interns > TiersDataQualityReport`  
+> URL : `http://dlakegtwprd:9047/space/INTERNAL/INTERNS.Data_Management_Interns.TiersDataQualityReport.TiersDataQualityReport`
 
-> ⚠️ **Remplace** `"@S141"."TiersDataQualityReport"."all_columns_history"` par le chemin exact de ton dataset dans Dremio.
+Copie-colle ces queries **une par une** dans l'éditeur SQL de Dremio (`http://dlakegtwprd:9047`).  
+Les views seront créées dans le **même dossier** que la table source `TiersDataQualityReport`.
 
 ### 🔵 View 1 — Score Global par Dataset
 
 ```sql
-CREATE OR REPLACE VIEW "@S141"."TiersDataQualityReport"."DQ_vue_score_global" AS
+CREATE OR REPLACE VIEW "INTERNS"."Data_Management_Interns"."TiersDataQualityReport"."DQ_vue_score_global" AS
 SELECT
     dataset,
     domain,
@@ -119,7 +122,7 @@ SELECT
         SUM(CASE WHEN flag = 'PASS' THEN 1 ELSE 0 END) * 100.0 / COUNT(*),
         1
     )                                                           AS taux_pass_pct
-FROM "@S141"."TiersDataQualityReport"."all_columns_history"
+FROM "INTERNS"."Data_Management_Interns"."TiersDataQualityReport"."TiersDataQualityReport"
 GROUP BY dataset, domain, rule, CAST("timestamp" AS DATE)
 ORDER BY date_run DESC, score_moyen_pct ASC;
 ```
@@ -127,7 +130,7 @@ ORDER BY date_run DESC, score_moyen_pct ASC;
 ### 🟠 View 2 — Détail Colonnes Enrichi (pour drill-down)
 
 ```sql
-CREATE OR REPLACE VIEW "@S141"."TiersDataQualityReport"."DQ_vue_detail_colonnes" AS
+CREATE OR REPLACE VIEW "INTERNS"."Data_Management_Interns"."TiersDataQualityReport"."DQ_vue_detail_colonnes" AS
 SELECT
     dremio_col,
     dataset,
@@ -149,13 +152,13 @@ SELECT
         WHEN score_pct >= 70 THEN 'WARN (70-89%)'
         ELSE 'FAIL (<70%)'
     END                                                   AS statut_label
-FROM "@S141"."TiersDataQualityReport"."all_columns_history";
+FROM "INTERNS"."Data_Management_Interns"."TiersDataQualityReport"."TiersDataQualityReport";
 ```
 
 ### 🟢 View 3 — Évolution Temporelle (pour trend chart)
 
 ```sql
-CREATE OR REPLACE VIEW "@S141"."TiersDataQualityReport"."DQ_vue_evolution" AS
+CREATE OR REPLACE VIEW "INTERNS"."Data_Management_Interns"."TiersDataQualityReport"."DQ_vue_evolution" AS
 SELECT
     CAST("timestamp" AS DATE)                              AS date_run,
     domain,
@@ -165,7 +168,7 @@ SELECT
     SUM(CASE WHEN flag = 'FAIL' THEN 1 ELSE 0 END)        AS nb_fail,
     SUM(CASE WHEN flag = 'WARN' THEN 1 ELSE 0 END)        AS nb_warn,
     SUM(CASE WHEN flag = 'PASS' THEN 1 ELSE 0 END)        AS nb_pass
-FROM "@S141"."TiersDataQualityReport"."all_columns_history"
+FROM "INTERNS"."Data_Management_Interns"."TiersDataQualityReport"."TiersDataQualityReport"
 GROUP BY CAST("timestamp" AS DATE), domain, SPLIT_PART(dataset, '.', 3)
 ORDER BY date_run;
 ```
@@ -189,8 +192,8 @@ ORDER BY date_run;
 
 Dans le panneau gauche de Tableau :
 ```
-Espace       → @S141 (home)
-Dossier      → TiersDataQualityReport
+Espace       → INTERNS
+Dossier      → Data_Management_Interns > TiersDataQualityReport
 Tables       → Glisser les 3 views :
   ✅ DQ_vue_score_global
   ✅ DQ_vue_detail_colonnes
