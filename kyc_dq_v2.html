@@ -1,0 +1,1321 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>KYC Data Quality · CIHOne Référentiel Tiers</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --or:#F0481C;--bl:#05AEEF;--am:#EF9F27;--gn:#22c55e;
+  --bg:#F5F8FC;--wh:#ffffff;
+  --tp:#151213;--ts:#4E4B4C;--bd:#E9E8E8;
+  --dk:#1B2631;--tb:#263141;--ws:#B0B8C4
+}
+html,body{height:100%;overflow:hidden}
+body{font-family:'Segoe UI',Arial,sans-serif;background:var(--ws);color:var(--tp);display:flex;flex-direction:column;font-size:12px}
+
+/* ─── APP HEADER ─── */
+.app-hdr{height:42px;background:var(--dk);display:flex;align-items:center;padding:0 16px;gap:12px;border-bottom:3px solid var(--or);flex-shrink:0}
+.logo{font-size:19px;font-weight:900;letter-spacing:1.5px}
+.logo .lb{color:var(--bl)}.logo .lo{color:var(--or)}
+.hdr-title{font-size:12px;font-weight:600;color:#CBD5E1;flex:1}
+.hpill{padding:2px 10px;border-radius:20px;font-size:9px;font-weight:700;letter-spacing:.5px;text-transform:uppercase}
+.hp-dom{background:rgba(5,174,239,.15);color:var(--bl);border:1px solid rgba(5,174,239,.4)}
+.hp-dt{background:rgba(255,255,255,.08);color:#94A3B8}
+.hp-fail{background:rgba(240,72,28,.2);color:var(--or);border:1px solid rgba(240,72,28,.4);animation:pulse 2.5s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.65}}
+
+/* ─── TABLEAU TOOLBAR ─── */
+.toolbar{height:33px;background:var(--tb);display:flex;align-items:center;padding:0 10px;gap:6px;border-bottom:1px solid #37475A;flex-shrink:0}
+.tb-btn{width:24px;height:21px;display:flex;align-items:center;justify-content:center;border-radius:3px;cursor:pointer;color:#8FA3B8;font-size:11px;border:none;background:transparent;transition:all .15s}
+.tb-btn:hover{background:rgba(255,255,255,.1);color:#fff}
+.tb-sep{width:1px;height:17px;background:#37475A;margin:0 3px}
+.view-badge{padding:2px 9px;background:rgba(5,174,239,.15);border:1px solid rgba(5,174,239,.3);border-radius:3px;color:var(--bl);font-size:9px;font-weight:700;letter-spacing:.5px}
+.tb-right{margin-left:auto;display:flex;align-items:center;gap:6px}
+.fit-sel{background:transparent;border:1px solid #37475A;color:#8FA3B8;font-size:9px;padding:2px 5px;border-radius:3px;cursor:pointer;outline:none}
+.fit-sel option{background:#263141}
+.tb-status{font-size:9px;color:#6B8099;display:flex;align-items:center;gap:4px}
+.tb-status .dot{width:6px;height:6px;border-radius:50%;background:var(--gn)}
+
+/* ─── FILTER BAR ─── */
+.fbar{height:36px;background:var(--wh);border-bottom:1px solid var(--bd);display:flex;align-items:center;padding:0 12px;gap:9px;flex-shrink:0}
+.fl{font-size:9px;font-weight:700;color:var(--ts);text-transform:uppercase;letter-spacing:.5px}
+.fsel{height:23px;border:1px solid var(--bd);border-radius:3px;padding:0 7px;font-size:10px;color:var(--tp);background:var(--wh);cursor:pointer;outline:none;transition:border-color .2s}
+.fsel:focus{border-color:var(--bl)}
+.fsep{width:1px;height:19px;background:var(--bd)}
+.fmeta{margin-left:auto;font-size:9px;color:var(--ts)}
+.fmeta b{color:var(--bl)}
+
+/* ─── CANVAS AREA ─── */
+.canvas-area{flex:1;display:flex;align-items:center;justify-content:center;background:var(--ws);overflow:hidden;padding:7px;position:relative}
+.canvas-frame{background:var(--wh);box-shadow:0 6px 30px rgba(0,0,0,.3),0 2px 8px rgba(0,0,0,.2);overflow:hidden;position:relative;border-radius:1px}
+.canvas-inner{width:100%;height:100%;position:relative;overflow:hidden}
+
+/* ─── VIEWS ─── */
+.view{display:none;width:100%;height:100%;position:absolute;top:0;left:0;flex-direction:column;overflow:hidden;background:var(--wh)}
+.view.active{display:flex}
+
+/* ─── KPI STRIP ─── */
+.kpi-strip{flex:0 0 auto;display:grid;grid-template-columns:repeat(5,1fr);gap:7px;padding:9px 10px 6px}
+.kc{background:var(--bg);border-radius:4px;padding:8px 10px;border-top:3px solid var(--bl);display:flex;flex-direction:column;gap:1px}
+.kc.kf{border-top-color:var(--or)}.kc.kw{border-top-color:var(--am)}.kc.kp{border-top-color:var(--gn)}
+.kl{font-size:8.5px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--ts)}
+.kv{font-size:22px;font-weight:800;line-height:1.1;margin-top:1px}
+.kv.bv{color:var(--bl)}.kv.ov{color:var(--or)}.kv.gv{color:var(--gn)}.kv.av{color:var(--am)}
+.ks{font-size:9px;color:var(--ts);margin-top:1px}
+.kd{font-size:8px;font-weight:700;padding:1px 5px;border-radius:7px;margin-top:3px;display:inline-block}
+.kd.up{background:rgba(34,197,94,.1);color:var(--gn)}.kd.dn{background:rgba(240,72,28,.1);color:var(--or)}
+
+/* ─── CHART PANELS ─── */
+.chart-row{display:grid;gap:7px;padding:0 8px;min-height:0}
+.chart-row.cr1{flex:1.25;padding-bottom:4px}
+.chart-row.cr2{flex:1;padding-bottom:7px}
+.cp{background:var(--bg);border-radius:4px;padding:8px;display:flex;flex-direction:column;min-height:0;overflow:hidden}
+.ph{display:flex;align-items:center;gap:4px;margin-bottom:7px;padding-bottom:5px;border-bottom:1px solid var(--bd);flex-shrink:0}
+.pdot{width:4px;height:11px;border-radius:2px;flex-shrink:0}
+.ptitle{font-size:8.5px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--ts)}
+.pbadge{margin-left:auto;padding:1px 5px;border-radius:3px;font-size:7.5px;font-weight:700}
+.cc{flex:1;min-height:0;position:relative}
+.cc canvas{position:absolute!important;inset:0;width:100%!important;height:100%!important}
+
+/* ─── TABLE VIEW ─── */
+.tbl-hdr{flex:0 0 auto;display:flex;align-items:center;gap:7px;padding:7px 10px;border-bottom:1px solid var(--bd)}
+.tbl-hdr h4{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--ts);display:flex;align-items:center;gap:5px}
+.tbl-acts{margin-left:auto;display:flex;gap:5px}
+.mbtn{height:21px;padding:0 9px;border-radius:3px;font-size:9px;font-weight:700;cursor:pointer;border:none;transition:opacity .2s}
+.mbtn:hover{opacity:.8}
+.mbtn.bt-bl{background:var(--bl);color:#fff}
+.mbtn.bt-or{background:rgba(240,72,28,.1);color:var(--or);border:1px solid rgba(240,72,28,.25)!important}
+.mbtn.bt-out{background:#fff;color:var(--tp);border:1px solid var(--bd)!important}
+.tbl-body{flex:1;overflow:auto;min-height:0}
+.tbl-body::-webkit-scrollbar{width:5px;height:5px}
+.tbl-body::-webkit-scrollbar-thumb{background:var(--bd);border-radius:3px}
+.dtable{width:100%;border-collapse:collapse;font-size:10px}
+.dtable thead{position:sticky;top:0;z-index:10;background:#F8FAFC}
+.dtable th{padding:6px 9px;text-align:left;font-size:8.5px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--ts);border-bottom:2px solid var(--bd);white-space:nowrap;cursor:pointer;user-select:none}
+.dtable th:hover{color:var(--bl)}
+.dtable td{padding:5px 9px;border-bottom:1px solid #F1F5F9}
+.dtable tr{transition:background .12s}
+.dtable tr:hover td{background:rgba(5,174,239,.04)}
+.dtable tr.rf td{background:rgba(240,72,28,.03)}
+.dtable tr.rw td{background:rgba(239,159,39,.03)}
+.fl-pill{padding:1px 6px;border-radius:9px;font-size:8px;font-weight:700}
+.fl-p{background:rgba(5,174,239,.1);color:var(--bl)}
+.fl-f{background:rgba(240,72,28,.1);color:var(--or)}
+.fl-w{background:rgba(239,159,39,.1);color:var(--am)}
+.ds-chip{font-size:8.5px;background:#F1F5F9;padding:1px 5px;border-radius:3px;color:var(--ts)}
+.pbar{height:4px;background:var(--bd);border-radius:2px;min-width:55px;overflow:hidden;margin-top:1px}
+.pbar-in{height:100%;border-radius:2px}
+.mono{font-family:'Consolas',monospace;font-size:10px}
+
+/* ─── DATASET CARDS ─── */
+.ds-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;padding:6px 8px 7px;flex-shrink:0}
+.dsc{background:var(--bg);border-radius:4px;padding:8px;border-top:3px solid var(--bl)}
+.dsc.cf{border-top-color:var(--or)}.dsc.cw{border-top-color:var(--am)}.dsc.cp{border-top-color:var(--gn)}
+.dsc h5{font-size:8.5px;font-weight:700;margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dsc-scr{font-size:17px;font-weight:800;line-height:1}
+.dsc-mn{font-size:7.5px;color:var(--ts);margin-top:3px;line-height:1.5}
+
+/* ─── REMEDIATION ─── */
+.rem-sum{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;padding:8px 8px 5px;flex-shrink:0}
+.rsk{background:var(--bg);border-radius:4px;padding:7px 9px}
+.rsk-l{font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--ts);margin-bottom:1px}
+.rsk-v{font-size:18px;font-weight:800}
+.rem-list{flex:1;overflow-y:auto;padding:0 8px 8px;min-height:0}
+.rem-list::-webkit-scrollbar{width:5px}
+.rem-list::-webkit-scrollbar-thumb{background:var(--bd);border-radius:3px}
+.rem-card{background:var(--wh);border-radius:4px;margin-bottom:6px;border-left:4px solid var(--or);box-shadow:0 1px 3px rgba(0,0,0,.07);padding:9px 11px;display:grid;grid-template-columns:34px 1fr auto;gap:9px;align-items:center}
+.rem-card.rw{border-left-color:var(--am)}
+.rprio{width:30px;height:30px;border-radius:50%;background:var(--or);color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;flex-shrink:0}
+.rprio.rpw{background:var(--am)}
+.ri h4{font-size:11px;font-weight:700;margin-bottom:2px}
+.ri .ri-ds{font-size:9px;color:var(--ts);margin-bottom:3px}
+.ri p{font-size:9.5px;color:var(--ts);line-height:1.4}
+.ri .ri-act{margin-top:3px;font-size:9.5px;color:var(--bl)}
+.rm{text-align:right}
+.rm-s{font-size:18px;font-weight:800;color:var(--or)}
+.rm-s.rms-w{color:var(--am)}
+.rm-sla{display:inline-block;margin-top:3px;font-size:8px;font-weight:700;padding:2px 5px;border-radius:3px;background:rgba(240,72,28,.1);color:var(--or)}
+.rm-sla.rsw{background:rgba(239,159,39,.1);color:var(--am)}
+
+/* ─── HEATMAP ─── */
+.hm-head{flex-shrink:0;padding:7px 9px;border-bottom:1px solid var(--bd);display:flex;align-items:center;gap:5px}
+.hm-head h3{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--ts)}
+.hm-body{flex:1;overflow:auto;padding:7px 9px;min-height:0}
+.hm-body::-webkit-scrollbar{width:5px;height:5px}
+.hm-body::-webkit-scrollbar-thumb{background:var(--bd);border-radius:3px}
+.hmt{border-collapse:separate;border-spacing:2px}
+.hmt th{font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:.3px;color:var(--ts);padding:3px 4px;white-space:nowrap}
+.hmt th.rl{text-align:left;min-width:105px;font-size:8.5px;font-weight:700}
+.hmt td{padding:4px 4px;text-align:center;font-size:8px;font-weight:700;border-radius:3px;min-width:46px}
+.hm-leg{flex-shrink:0;display:flex;gap:10px;align-items:center;font-size:8.5px;color:var(--ts);padding:5px 9px 7px;border-top:1px solid var(--bd)}
+.hml-item{display:flex;align-items:center;gap:3px}
+.hml-box{width:14px;height:7px;border-radius:2px}
+
+/* ─── SECTION HEADER (inside canvas for detail tab) ─── */
+.sec-hdr{display:flex;align-items:center;gap:5px;padding:7px 9px;border-bottom:1px solid var(--bd);flex-shrink:0;background:var(--wh)}
+.sec-dot{width:4px;height:11px;border-radius:2px;flex-shrink:0}
+.sec-title{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--ts)}
+.sec-right{margin-left:auto;display:flex;gap:5px}
+
+/* ─── SHEET TABS ─── */
+.sheet-tabs{height:29px;background:var(--dk);display:flex;align-items:flex-end;padding:0 10px;gap:1px;flex-shrink:0;border-top:1px solid #37475A}
+.stab{height:25px;padding:0 13px;display:flex;align-items:center;gap:5px;font-size:10px;font-weight:600;color:#8FA3B8;cursor:pointer;border-radius:4px 4px 0 0;border:1px solid transparent;border-bottom:none;transition:all .2s;white-space:nowrap;background:rgba(255,255,255,.04);user-select:none}
+.stab:hover{background:rgba(255,255,255,.1);color:#E5E7EB}
+.stab.active{background:var(--wh);color:var(--tp);border-color:#37475A}
+.tab-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+
+/* ─── DRAG & DROP OVERLAY ─── */
+.drag-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(27, 38, 49, 0.85);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 4px dashed var(--bl);
+  z-index: 99999;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  color: #fff;
+  transition: all 0.3s ease;
+}
+.drag-overlay.active {
+  display: flex;
+}
+.drag-overlay-inner {
+  text-align: center;
+  padding: 40px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+.drag-overlay h2 {
+  font-size: 20px;
+  font-weight: 800;
+  margin-top: 15px;
+  color: var(--bl);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+.drag-overlay p {
+  font-size: 11px;
+  color: #94A3B8;
+  margin-top: 8px;
+}
+.drag-overlay .icon {
+  font-size: 48px;
+  animation: bounce 1.5s infinite ease-in-out;
+}
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+</style>
+</head>
+<body>
+
+<!-- APP HEADER -->
+<header class="app-hdr">
+  <div class="logo"><span class="lb">CIH</span><span class="lo">One</span></div>
+  <div class="hdr-title">KYC Data Quality Monitor &nbsp;&middot;&nbsp; Référentiel Tiers</div>
+  <span class="hpill hp-dom">PTP-TIE-POR</span>
+  <span class="hpill hp-dt">&#128197; 19 Juin 2026 &middot; 11:37</span>
+  <span class="hpill hp-fail" id="hdr-fail">&#9888; 5 FAIL</span>
+</header>
+
+<!-- TOOLBAR -->
+<div class="toolbar">
+  <button class="tb-btn" title="Annuler">&#8617;</button>
+  <button class="tb-btn" title="Rétablir">&#8618;</button>
+  <div class="tb-sep"></div>
+  <button class="tb-btn" title="Actualiser" id="btn-refresh" onclick="doRefresh()">&#8635;</button>
+  <button class="tb-btn" title="Pause auto-refresh">&#9646;&#9646;</button>
+  <div class="tb-sep"></div>
+  <button class="tb-btn" title="Charger un fichier CSV" onclick="triggerImport()" style="width:auto;padding:0 8px;display:flex;align-items:center;gap:4px">
+    <span>📂</span><span style="font-size:10px;font-weight:600">Charger CSV</span>
+  </button>
+  <input type="file" id="csv-file-input" accept=".csv" style="display:none" onchange="handleFileSelect(event)">
+  <div class="tb-sep"></div>
+  <span class="view-badge" id="view-badge">Vue Globale</span>
+  <div class="tb-sep"></div>
+  <div class="tb-right">
+    <div class="tb-status"><span class="dot"></span><span id="status-txt">Données à jour &middot; 19/06/2026</span></div>
+    <div class="tb-sep"></div>
+    <select class="fit-sel" onchange="handleFit(this.value)">
+      <option value="fit">Ajuster 3:2</option>
+      <option value="w">Largeur pleine</option>
+    </select>
+    <button class="tb-btn" title="Plein écran" onclick="toggleFS()">&#9645;</button>
+    <button class="tb-btn" title="Exporter CSV" onclick="exportCSV()">&#8595;</button>
+  </div>
+</div>
+
+<!-- FILTER BAR -->
+<div class="fbar">
+  <span class="fl">Dataset</span>
+  <select class="fsel" id="fds" onchange="applyFilters()">
+    <option value="ALL">Tous les datasets</option>
+    <option value="PP.clients">PP.clients</option>
+    <option value="PM.clients">PM.clients</option>
+    <option value="Pro.clients">Pro.clients</option>
+    <option value="PM.adresses">PM.adresses</option>
+    <option value="PM.associés">PM.associés</option>
+    <option value="PM.gérants">PM.gérants</option>
+    <option value="Pro.rel_PP">Pro.rel_PP</option>
+  </select>
+  <div class="fsep"></div>
+  <span class="fl">Statut</span>
+  <select class="fsel" id="fflag" onchange="applyFilters()">
+    <option value="ALL">Tous</option>
+    <option value="PASS">&#9989; PASS</option>
+    <option value="FAIL">&#10060; FAIL</option>
+    <option value="WARN">&#9888; WARN</option>
+  </select>
+  <div class="fsep"></div>
+  <span class="fl">Seuil Min</span>
+  <select class="fsel" id="fthr" onchange="applyFilters()">
+    <option value="0">Tous scores</option>
+    <option value="90">Score &ge; 90%</option>
+    <option value="95">Score &ge; 95%</option>
+  </select>
+  <div class="fsep"></div>
+  <span class="fl">Tri</span>
+  <select class="fsel" id="fsort" onchange="applyFilters()">
+    <option value="score_asc">Score &#8593; (Pires en 1er)</option>
+    <option value="score_desc">Score &#8595; (Meilleurs en 1er)</option>
+    <option value="col_asc">Colonne A&rarr;Z</option>
+    <option value="ds_asc">Dataset A&rarr;Z</option>
+    <option value="total_desc">Volume &#8595;</option>
+  </select>
+  <span class="fmeta">Résultat&nbsp;: <b id="fcount">42</b> colonnes &nbsp;&middot;&nbsp; Domaine&nbsp;: <b>PTP-TIE-POR</b> &nbsp;&middot;&nbsp; Règle&nbsp;: <b>Complétude</b></span>
+</div>
+
+<!-- CANVAS AREA -->
+<div class="canvas-area" id="canvas-area">
+<div class="canvas-frame" id="canvas-frame">
+<div class="canvas-inner">
+
+<!-- VIEW: VUE GLOBALE -->
+<div class="view active" id="view-global">
+  <div class="kpi-strip">
+    <div class="kc">
+      <div class="kl">Périmètre</div>
+      <div class="kv bv" id="kpi-total">42</div>
+      <div class="ks" id="kpi-total-sub">colonnes &middot; 7 datasets</div>
+      <span class="kd up">39 cols distinctes</span>
+    </div>
+    <div class="kc">
+      <div class="kl">Score Moyen</div>
+      <div class="kv bv" id="kpi-score">90.1%</div>
+      <div class="ks">Complétude globale</div>
+      <span class="kd up">&#8593; +8.5 pts vs J-16</span>
+    </div>
+    <div class="kc kp">
+      <div class="kl">Colonnes PASS</div>
+      <div class="kv gv" id="kpi-pass">34</div>
+      <div class="ks" id="kpi-ppct">80.9% du périmètre</div>
+      <span class="kd up">Seuil &ge; 90%</span>
+    </div>
+    <div class="kc kf">
+      <div class="kl">Colonnes FAIL</div>
+      <div class="kv ov" id="kpi-fail">5</div>
+      <div class="ks">Sous seuil critique</div>
+      <span class="kd dn">&#8595; &minus;5 vs J-16</span>
+    </div>
+    <div class="kc kw">
+      <div class="kl">Colonnes WARN</div>
+      <div class="kv av" id="kpi-warn">3</div>
+      <div class="ks">75% &le; score &lt; 90%</div>
+      <span class="kd dn">7.1% du périmètre</span>
+    </div>
+  </div>
+  <div class="chart-row cr1" style="grid-template-columns:1.9fr 1fr">
+    <div class="cp">
+      <div class="ph">
+        <div class="pdot" style="background:var(--bl)"></div>
+        <span class="ptitle">Évolution Score Moyen &amp; Anomalies — 03 au 19 Jun 2026</span>
+        <span class="pbadge" style="background:rgba(5,174,239,.1);color:var(--bl)">Dual Axis</span>
+      </div>
+      <div class="cc"><canvas id="trendChart"></canvas></div>
+    </div>
+    <div class="cp">
+      <div class="ph">
+        <div class="pdot" style="background:var(--or)"></div>
+        <span class="ptitle">Répartition Statuts · Snapshot 19/06</span>
+        <span class="pbadge" style="background:rgba(240,72,28,.1);color:var(--or)">42 cols</span>
+      </div>
+      <div class="cc"><canvas id="donutChart"></canvas></div>
+    </div>
+  </div>
+  <div class="chart-row cr2" style="grid-template-columns:1fr 1fr">
+    <div class="cp">
+      <div class="ph">
+        <div class="pdot" style="background:var(--am)"></div>
+        <span class="ptitle">Score de Complétude par Dataset</span>
+        <span class="pbadge" style="background:rgba(239,159,39,.1);color:var(--am)">Seuil 90%</span>
+      </div>
+      <div class="cc"><canvas id="dsBarChart"></canvas></div>
+    </div>
+    <div class="cp">
+      <div class="ph">
+        <div class="pdot" style="background:var(--gn)"></div>
+        <span class="ptitle">Distribution des Scores par Tranche</span>
+      </div>
+      <div class="cc"><canvas id="distChart"></canvas></div>
+    </div>
+  </div>
+</div>
+
+<!-- VIEW: DÉTAIL COLONNES -->
+<div class="view" id="view-detail">
+  <div class="tbl-hdr">
+    <div class="sec-dot" style="background:var(--or);width:4px;height:11px;border-radius:2px"></div>
+    <h4>Détail Colonnes &mdash; Snapshot 19 Juin 2026 &nbsp;&middot;&nbsp; <span style="color:var(--bl)" id="tbl-count">42</span> enregistrements</h4>
+    <div class="tbl-acts">
+      <button class="mbtn bt-or" onclick="showFail()">&#9888; FAIL Only</button>
+      <button class="mbtn bt-out" onclick="resetFilters()">&#8634; Reset</button>
+      <button class="mbtn bt-bl" onclick="exportCSV()">&#8595; Export CSV</button>
+    </div>
+  </div>
+  <div class="tbl-body">
+    <table class="dtable">
+      <thead>
+        <tr>
+          <th style="width:26px">#</th>
+          <th>Colonne &#8597;</th>
+          <th>Dataset &#8597;</th>
+          <th>Score % &#8597;</th>
+          <th>Statut</th>
+          <th style="min-width:100px">Complétude</th>
+          <th>Valides &#8597;</th>
+          <th>Total Lignes &#8597;</th>
+          <th>Manquants</th>
+          <th>Règle DQ</th>
+          <th>Chemin Logique</th>
+        </tr>
+      </thead>
+      <tbody id="tbl-body"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- VIEW: PAR DATASET -->
+<div class="view" id="view-dataset">
+  <div class="chart-row cr1" style="grid-template-columns:1fr 1fr;padding-top:7px">
+    <div class="cp">
+      <div class="ph"><div class="pdot" style="background:var(--bl)"></div><span class="ptitle">Score Moyen par Dataset (seuil 90%)</span></div>
+      <div class="cc"><canvas id="dsDetailBar"></canvas></div>
+    </div>
+    <div class="cp">
+      <div class="ph"><div class="pdot" style="background:var(--or)"></div><span class="ptitle">PASS / WARN / FAIL par Dataset (Nb cols)</span></div>
+      <div class="cc"><canvas id="dsStackedBar"></canvas></div>
+    </div>
+  </div>
+  <div class="chart-row" style="grid-template-columns:1fr 1fr;flex:1;padding-bottom:6px">
+    <div class="cp">
+      <div class="ph"><div class="pdot" style="background:var(--am)"></div><span class="ptitle">Volume Total Lignes par Dataset (M)</span></div>
+      <div class="cc"><canvas id="dsVolumeBar"></canvas></div>
+    </div>
+    <div class="cp">
+      <div class="ph"><div class="pdot" style="background:var(--gn)"></div><span class="ptitle">Taux Valides vs Manquants (100% empilé)</span></div>
+      <div class="cc"><canvas id="dsCoverChart"></canvas></div>
+    </div>
+  </div>
+  <div class="ds-grid" id="ds-cards"></div>
+</div>
+
+<!-- VIEW: TENDANCE -->
+<div class="view" id="view-trend">
+  <div class="chart-row" style="grid-template-columns:1fr;flex:.9;padding-top:7px;padding-bottom:4px">
+    <div class="cp">
+      <div class="ph">
+        <div class="pdot" style="background:var(--bl)"></div>
+        <span class="ptitle">Évolution Complète Score Moyen &amp; Anomalies — 11 Snapshots (Juin 2026)</span>
+        <span class="pbadge" style="background:rgba(5,174,239,.1);color:var(--bl)">J-16 &rarr; 19/06</span>
+      </div>
+      <div class="cc"><canvas id="trendFullChart"></canvas></div>
+    </div>
+  </div>
+  <div class="chart-row" style="grid-template-columns:1fr 1fr;flex:1;padding-bottom:7px">
+    <div class="cp">
+      <div class="ph"><div class="pdot" style="background:var(--or)"></div><span class="ptitle">Répartition PASS / WARN / FAIL par Snapshot</span></div>
+      <div class="cc"><canvas id="trendStackChart"></canvas></div>
+    </div>
+    <div class="cp">
+      <div class="ph"><div class="pdot" style="background:var(--am)"></div><span class="ptitle">Delta Score Snapshot-over-Snapshot (&Delta;%)</span></div>
+      <div class="cc"><canvas id="trendDeltaChart"></canvas></div>
+    </div>
+  </div>
+</div>
+
+<!-- VIEW: REMÉDIATION -->
+<div class="view" id="view-remediation">
+  <div class="rem-sum">
+    <div class="rsk"><div class="rsk-l">Colonnes FAIL</div><div class="rsk-v" style="color:var(--or)">5</div></div>
+    <div class="rsk"><div class="rsk-l">Colonnes WARN</div><div class="rsk-v" style="color:var(--am)">3</div></div>
+    <div class="rsk"><div class="rsk-l">Lignes impactées (FAIL)</div><div class="rsk-v" style="color:var(--or)">~11.8 M</div></div>
+    <div class="rsk"><div class="rsk-l">SLA Maximum</div><div class="rsk-v">19/07/2026</div></div>
+  </div>
+  <div class="rem-list" id="rem-list"></div>
+</div>
+
+<!-- VIEW: HEATMAP -->
+<div class="view" id="view-heatmap">
+  <div class="hm-head">
+    <div class="pdot" style="background:var(--bl);width:4px;height:11px;border-radius:2px"></div>
+    <h3>Heatmap Qualité &mdash; Dataset &times; Colonne (Score %) &middot; Snapshot 19 Juin 2026</h3>
+  </div>
+  <div class="hm-body" id="hm-body"></div>
+  <div class="hm-leg">
+    <b style="color:var(--ts)">Légende :</b>
+    <span class="hml-item"><span class="hml-box" style="background:#fecaca"></span>Critique &lt;50%</span>
+    <span class="hml-item"><span class="hml-box" style="background:#fed7aa"></span>Faible 50–75%</span>
+    <span class="hml-item"><span class="hml-box" style="background:#fef08a"></span>Moyen 75–90%</span>
+    <span class="hml-item"><span class="hml-box" style="background:#bbf7d0"></span>Bon 90–95%</span>
+    <span class="hml-item"><span class="hml-box" style="background:#86efac"></span>Excellent 95–100%</span>
+    <span class="hml-item"><span class="hml-box" style="background:#F1F5F9;border:1px solid #E9E8E8"></span>N/A</span>
+  </div>
+</div>
+
+</div></div></div><!-- canvas-inner / canvas-frame / canvas-area -->
+
+<!-- SHEET TABS -->
+<div class="sheet-tabs">
+  <div class="stab active" onclick="switchTab('global',this)"><span class="tab-dot" style="background:var(--bl)"></span>&#128202; Vue Globale</div>
+  <div class="stab" onclick="switchTab('detail',this)"><span class="tab-dot" style="background:var(--or)"></span>&#128203; Détail Colonnes</div>
+  <div class="stab" onclick="switchTab('dataset',this)"><span class="tab-dot" style="background:var(--am)"></span>&#128193; Par Dataset</div>
+  <div class="stab" onclick="switchTab('trend',this)"><span class="tab-dot" style="background:var(--gn)"></span>&#128200; Tendance</div>
+  <div class="stab" onclick="switchTab('remediation',this)"><span class="tab-dot" style="background:var(--or)"></span>&#128295; Remédiation</div>
+  <div class="stab" onclick="switchTab('heatmap',this)"><span class="tab-dot" style="background:#8B5CF6"></span>&#128293; Heatmap</div>
+</div>
+
+<script>
+/* ================================================================
+   DATA
+================================================================ */
+const DEFAULT_COLS = [
+  {col:"capital",ds:"Pro.clients",score:0.00,flag:"FAIL",valides:0,total:29610,path:"legal_entity_financial_data.capital"},
+  {col:"employeur",ds:"PP.clients",score:27.60,flag:"FAIL",valides:1260918,total:4569367,path:"customer_job.employer"},
+  {col:"code_categorie_socio_professionelle",ds:"PP.clients",score:45.81,flag:"FAIL",valides:2093114,total:4569367,path:"customer_job.socioprofessional_category"},
+  {col:"code_secteur_professionel",ds:"PP.clients",score:45.81,flag:"FAIL",valides:2093167,total:4569367,path:"customer_job.professional_sector"},
+  {col:"code_profession",ds:"PP.clients",score:45.81,flag:"FAIL",valides:2093157,total:4569367,path:"customer_job.occupation"},
+  {col:"chiffre_affaire",ds:"Pro.clients",score:71.62,flag:"WARN",valides:21208,total:29610,path:"legal_entity_financial_data.turnover"},
+  {col:"code_postal",ds:"PM.adresses",score:85.15,flag:"WARN",valides:6966618,total:8181178,path:"customer_mail.zip_code"},
+  {col:"ville_de_naissance",ds:"PP.clients",score:86.70,flag:"WARN",valides:4009031,total:4624248,path:"natural_person_description.birth_city"},
+  {col:"capital",ds:"PM.clients",score:91.97,flag:"PASS",valides:83249,total:90519,path:"legal_entity_financial_data.capital"},
+  {col:"chiffre_affaire",ds:"PM.clients",score:92.38,flag:"PASS",valides:83625,total:90519,path:"legal_entity_financial_data.turnover"},
+  {col:"datecreationjuridique",ds:"PM.gérants",score:98.57,flag:"PASS",valides:90123,total:91434,path:"legal_entity_description.creation_date"},
+  {col:"codepaysdenationalite",ds:"PM.associés",score:98.70,flag:"PASS",valides:90241,total:91434,path:"legal_entity_description.nationality_country"},
+  {col:"code_pays_de_nationalite",ds:"PM.clients",score:98.70,flag:"PASS",valides:90241,total:91434,path:"legal_entity_description.nationality_country"},
+  {col:"code_segment",ds:"PP.clients",score:98.72,flag:"PASS",valides:77,total:78,path:"customer_segmentation.segment_number"},
+  {col:"lieu_creation",ds:"PM.clients",score:99.12,flag:"PASS",valides:9428804,total:9512975,path:"customer_creation_context.user_identifier"},
+  {col:"situation_familiale",ds:"PP.clients",score:99.63,flag:"PASS",valides:4607257,total:4624248,path:"natural_person_description.marital_status"},
+  {col:"code_ville",ds:"PM.adresses",score:99.65,flag:"PASS",valides:8152597,total:8181178,path:"customer_mail.city"},
+  {col:"code_pays_de_nationalite",ds:"PP.clients",score:99.81,flag:"PASS",valides:4615583,total:4624248,path:"natural_person_description.nationality_country"},
+  {col:"pays_de_naissance",ds:"PP.clients",score:99.81,flag:"PASS",valides:4615494,total:4624248,path:"natural_person_description.birth_country"},
+  {col:"code_pays_de_residence",ds:"PP.clients",score:99.85,flag:"PASS",valides:4617225,total:4624248,path:"natural_person_description.residence_country"},
+  {col:"nombre_d_enfants",ds:"PP.clients",score:99.86,flag:"PASS",valides:4617562,total:4624248,path:"natural_person_description.children_count"},
+  {col:"date_de_naissance",ds:"PP.clients",score:99.86,flag:"PASS",valides:4617561,total:4624248,path:"natural_person_description.birth_date"},
+  {col:"genre",ds:"PP.clients",score:99.90,flag:"PASS",valides:4619771,total:4624248,path:"natural_person_description.gender"},
+  {col:"civilite",ds:"PP.clients",score:99.96,flag:"PASS",valides:4622215,total:4624248,path:"natural_person_description.civility"},
+  {col:"nom_gerant",ds:"PM.gérants",score:99.96,flag:"PASS",valides:91430,total:91434,path:"legal_entity_description.manager_name"},
+  {col:"nom_personnes_physique",ds:"Pro.rel_PP",score:99.96,flag:"PASS",valides:4622215,total:4624248,path:"customers.customer_name"},
+  {col:"code_pays",ds:"PM.adresses",score:99.98,flag:"PASS",valides:8179391,total:8181178,path:"customer_mail.country_code"},
+  {col:"codepaysdedomiciliation",ds:"PM.associés",score:99.98,flag:"PASS",valides:91432,total:91434,path:"legal_entity_description.domicile_country"},
+  {col:"code_pays_de_domiciliation",ds:"PM.clients",score:99.98,flag:"PASS",valides:91432,total:91434,path:"legal_entity_description.domicile_country"},
+  {col:"code_secteur_activite",ds:"Pro.clients",score:100.00,flag:"PASS",valides:29602,total:29602,path:"customer_activity.main"},
+  {col:"branche_activite",ds:"Pro.clients",score:100.00,flag:"PASS",valides:29602,total:29602,path:"customer_activity.branch"},
+  {col:"raison_sociale",ds:"Pro.clients",score:100.00,flag:"PASS",valides:29610,total:29610,path:"legal_entity_description.corporate_name"},
+  {col:"company_name",ds:"Pro.rel_PP",score:100.00,flag:"PASS",valides:29610,total:29610,path:"customers.company_name"},
+  {col:"type_secteur_activite",ds:"PM.clients",score:100.00,flag:"PASS",valides:92027,total:92027,path:"customer_activity.main"},
+  {col:"branche_activite",ds:"PM.clients",score:100.00,flag:"PASS",valides:92027,total:92027,path:"customer_activity.branch"},
+  {col:"identifiant_fatca",ds:"PM.clients",score:100.00,flag:"PASS",valides:92027,total:92027,path:"legal_entity_description.fatca_id"},
+  {col:"situation_professionelle",ds:"PP.clients",score:100.00,flag:"PASS",valides:4569367,total:4569367,path:"customer_job.professional_situation"},
+  {col:"adresse",ds:"PM.adresses",score:100.00,flag:"PASS",valides:8181178,total:8181178,path:"customer_mail.complete_adress"},
+  {col:"type_client",ds:"PP.clients",score:100.00,flag:"PASS",valides:4745294,total:4745294,path:"customers.customer_type"},
+  {col:"radical_professional",ds:"Pro.rel_PP",score:100.00,flag:"PASS",valides:29611,total:29611,path:"customers.customer_number"},
+  {col:"radical_personnes_physique",ds:"Pro.rel_PP",score:100.00,flag:"PASS",valides:4624249,total:4624249,path:"customers.customer_number"},
+  {col:"raisonsocial",ds:"PM.gérants",score:100.00,flag:"PASS",valides:91434,total:91434,path:"legal_entity_description.corporate_name"}
+];
+
+const DEFAULT_TREND = [
+  {d:"03/06",s:81.61,p:34,f:10,w:3},{d:"04/06",s:81.61,p:34,f:10,w:3},
+  {d:"05/06",s:80.25,p:31,f:10,w:2},{d:"08/06",s:86.57,p:32,f:7,w:3},
+  {d:"09/06",s:87.17,p:34,f:7,w:3},{d:"10/06",s:87.17,p:34,f:7,w:3},
+  {d:"11/06",s:87.17,p:34,f:7,w:3},{d:"12/06",s:87.17,p:34,f:7,w:3},
+  {d:"15/06",s:87.17,p:34,f:7,w:3},{d:"16/06",s:87.17,p:34,f:7,w:3},
+  {d:"19/06",s:90.12,p:34,f:5,w:3}
+];
+
+const DEFAULT_DS = [
+  {n:"Pro.clients",s:74.32,p:3,f:1,w:1,t:5},
+  {n:"PP.clients",s:84.32,p:11,f:4,w:1,t:16},
+  {n:"PM.adresses",s:96.20,p:3,f:0,w:1,t:4},
+  {n:"PM.clients",s:97.77,p:8,f:0,w:0,t:8},
+  {n:"PM.associés",s:99.34,p:2,f:0,w:0,t:2},
+  {n:"PM.gérants",s:99.51,p:3,f:0,w:0,t:3},
+  {n:"Pro.rel_PP",s:99.99,p:4,f:0,w:0,t:4}
+];
+
+const DEFAULT_REM = [
+  {pr:1,col:"capital",ds:"Pro.clients",s:0.00,flag:"FAIL",imp:"Critique",
+   desc:"Aucune valeur sur 29 610 enregistrements Pro. Champ capital obligatoire KYC/AML — bloque la classification risque client Professionnel.",
+   act:"Alimenter via ERP / SI Comptable. Vérifier mapping pipeline Dremio > legal_entity_financial_data.capital.",sla:"J+3"},
+  {pr:2,col:"employeur",ds:"PP.clients",s:27.60,flag:"FAIL",imp:"Haute",
+   desc:"2 M+ valeurs manquantes sur 4.5 M lignes PP. Champ critique pour score KYC socio-professionnel et détection PEP.",
+   act:"Vérifier règle de propagation depuis customer_job.employer. Enrichissement backlog données PP.",sla:"J+7"},
+  {pr:3,col:"code_categorie_socio_prof…",ds:"PP.clients",s:45.81,flag:"FAIL",imp:"Haute",
+   desc:"54.19% de valeurs manquantes. Corrélé avec code_secteur_professionel et code_profession — même population impactée (2.09 M lignes).",
+   act:"Traitement groupé colonnes 3–4–5 depuis la même source Dremio customer_job.",sla:"J+7"},
+  {pr:4,col:"code_secteur_professionel",ds:"PP.clients",s:45.81,flag:"FAIL",imp:"Haute",
+   desc:"54.19% manquants. Même cause racine que #3. Source: customer_job.professional_sector. Traitement groupé recommandé.",
+   act:"Traitement groupé avec colonnes 3 et 5.",sla:"J+7"},
+  {pr:5,col:"code_profession",ds:"PP.clients",s:45.81,flag:"FAIL",imp:"Haute",
+   desc:"54.19% manquants. Même cause racine. Source: customer_job.occupation.",
+   act:"Traitement groupé avec colonnes 3 et 4.",sla:"J+7"},
+  {pr:6,col:"chiffre_affaire",ds:"Pro.clients",s:71.62,flag:"WARN",imp:"Modérée",
+   desc:"71.6% de complétude sur Pro.clients. Champ financier critique pour scoring crédit et KYC.",
+   act:"Vérification alimentation SI Comptable. Déclaratif possible pour indépendants.",sla:"J+14"},
+  {pr:7,col:"code_postal",ds:"PM.adresses",s:85.15,flag:"WARN",imp:"Modérée",
+   desc:"1.2 M adresses sans code postal sur 8.1 M. Impact géolocalisation et scoring AML/KYC.",
+   act:"Enrichissement via référentiel postal national. Tolérance 85% temporaire acceptable.",sla:"J+21"},
+  {pr:8,col:"ville_de_naissance",ds:"PP.clients",s:86.70,flag:"WARN",imp:"Faible",
+   desc:"614 K valeurs manquantes sur 4.6 M. Héritage données anciennes. Non bloquant réglementairement.",
+   act:"Enrichissement progressif lors de mise à jour KYC périodique. Priorité basse.",sla:"J+30"}
+];
+
+let COLS = [...DEFAULT_COLS];
+let TREND = [...DEFAULT_TREND];
+let DS = [...DEFAULT_DS];
+let REM = [...DEFAULT_REM];
+
+/* ================================================================
+   DYNAMIC CSV LOADING & PARSING
+================================================================ */
+
+const DS_MAP = {
+  "CIHOne.CLIENTS.Personnes_Physiques.clients": "PP.clients",
+  "CIHOne.CLIENTS.Personnes_Morales.clients": "PM.clients",
+  "CIHOne.CLIENTS.Professionnels.clients": "Pro.clients",
+  "CIHOne.CLIENTS.Personnes_Morales.adresses": "PM.adresses",
+  "CIHOne.CLIENTS.Personnes_Morales.associes": "PM.associés",
+  "CIHOne.CLIENTS.Personnes_Morales.gerants": "PM.gérants",
+  "CIHOne.CLIENTS.Professionnels.relations_professional_personnes_physiques": "Pro.rel_PP"
+};
+
+function getShortDs(dsName) {
+  if (DS_MAP[dsName]) return DS_MAP[dsName];
+  let short = dsName.replace("CIHOne.CLIENTS.", "");
+  short = short.replace("Personnes_Morales", "PM");
+  short = short.replace("Personnes_Physiques", "PP");
+  short = short.replace("Professionnels", "Pro");
+  short = short.replace("associes", "associés");
+  short = short.replace("gerants", "gérants");
+  short = short.replace("relations_professional_personnes_physiques", "rel_PP");
+  return short;
+}
+
+function getLogicalPath(virtPath) {
+  if (!virtPath) return "";
+  const parts = virtPath.split('.');
+  if (parts.length >= 2) {
+    return parts.slice(-2).join('.');
+  }
+  return virtPath;
+}
+
+function parseCSV(text) {
+  const lines = text.split(/\r?\n/);
+  if (lines.length === 0) return [];
+  
+  // Parse header
+  const headers = lines[0].split(',').map(h => h.trim().replace(/^"|"$/g, ''));
+  const records = [];
+  
+  for (let i = 1; i < lines.length; i++) {
+    const line = lines[i].trim();
+    if (!line) continue;
+    
+    const values = line.split(',').map(v => v.trim().replace(/^"|"$/g, ''));
+    if (values.length < headers.length) continue;
+    
+    const obj = {};
+    headers.forEach((header, index) => {
+      obj[header] = values[index];
+    });
+    records.push(obj);
+  }
+  return records;
+}
+
+function processCSVData(rawRecords) {
+  if (!rawRecords || rawRecords.length === 0) return false;
+  
+  // Find all unique timestamps
+  const timestamps = Array.from(new Set(rawRecords.map(r => r.timestamp))).sort();
+  if (timestamps.length === 0) return false;
+  
+  const latestTimestamp = timestamps[timestamps.length - 1];
+  
+  // Group by dataset + virt_full_path to get the latest record of each column
+  const latestByCol = {};
+  rawRecords.forEach(r => {
+    const key = r.dataset + ' | ' + r.virt_full_path;
+    if (!latestByCol[key] || r.timestamp > latestByCol[key].timestamp) {
+      latestByCol[key] = r;
+    }
+  });
+  
+  const latestCols = Object.values(latestByCol);
+  
+  // 1. Build COLS
+  COLS = latestCols.map(r => {
+    const score = parseFloat(r.score_pct) || 0.0;
+    return {
+      col: r.dremio_col,
+      ds: getShortDs(r.dataset),
+      score: score,
+      flag: r.flag || (score >= 90 ? "PASS" : score >= 75 ? "WARN" : "FAIL"),
+      valides: parseInt(r.valides) || 0,
+      total: parseInt(r.total_lignes) || 0,
+      path: getLogicalPath(r.virt_full_path),
+      full_ds: r.dataset,
+      full_path: r.virt_full_path,
+      timestamp: r.timestamp
+    };
+  });
+  
+  // 2. Build TREND (by unique day)
+  const uniqueDates = Array.from(new Set(rawRecords.map(r => r.timestamp.substring(0, 10)))).sort();
+  TREND = uniqueDates.map(dateStr => {
+    const subRecords = rawRecords.filter(r => r.timestamp.substring(0, 10) <= dateStr);
+    const latestForDate = {};
+    subRecords.forEach(r => {
+      const key = r.dataset + ' | ' + r.virt_full_path;
+      if (!latestForDate[key] || r.timestamp > latestForDate[key].timestamp) {
+        latestForDate[key] = r;
+      }
+    });
+    
+    const colsForDate = Object.values(latestForDate);
+    const total = colsForDate.length;
+    const p = colsForDate.filter(c => c.flag === 'PASS').length;
+    const f = colsForDate.filter(c => c.flag === 'FAIL').length;
+    const w = colsForDate.filter(c => c.flag === 'WARN').length;
+    const sumScore = colsForDate.reduce((sum, c) => sum + (parseFloat(c.score_pct) || 0), 0);
+    const avg = total > 0 ? sumScore / total : 0;
+    
+    const parts = dateStr.split('-');
+    const formattedDate = parts.length === 3 ? `${parts[2]}/${parts[1]}` : dateStr;
+    
+    return {
+      d: formattedDate,
+      s: parseFloat(avg.toFixed(2)),
+      p: p,
+      f: f,
+      w: w
+    };
+  });
+  
+  // 3. Build DS
+  const dsMap = {};
+  COLS.forEach(c => {
+    if (!dsMap[c.ds]) {
+      dsMap[c.ds] = { n: c.ds, scoresSum: 0, p: 0, f: 0, w: 0, t: 0 };
+    }
+    const dsObj = dsMap[c.ds];
+    dsObj.scoresSum += c.score;
+    dsObj.t += 1;
+    if (c.flag === 'PASS') dsObj.p += 1;
+    else if (c.flag === 'FAIL') dsObj.f += 1;
+    else if (c.flag === 'WARN') dsObj.w += 1;
+  });
+  
+  DS = Object.values(dsMap).map(d => {
+    return {
+      n: d.n,
+      s: parseFloat((d.scoresSum / d.t).toFixed(2)),
+      p: d.p,
+      f: d.f,
+      w: d.w,
+      t: d.t
+    };
+  });
+  
+  const originalOrder = ["Pro.clients", "PP.clients", "PM.adresses", "PM.clients", "PM.associés", "PM.gérants", "Pro.rel_PP"];
+  DS.sort((a, b) => {
+    const ia = originalOrder.indexOf(a.n);
+    const ib = originalOrder.indexOf(b.n);
+    if (ia !== -1 && ib !== -1) return ia - ib;
+    if (ia !== -1) return -1;
+    if (ib !== -1) return 1;
+    return a.n.localeCompare(b.n);
+  });
+  
+  // 4. Build REM
+  const DB_REM = {
+    "Pro.clients|capital": {
+      imp: "Critique",
+      desc: (c, missing) => `Aucune valeur sur ${c.total.toLocaleString()} enregistrements Pro. Champ capital obligatoire KYC/AML — bloque la classification risque client Professionnel.`,
+      act: "Alimenter via ERP / SI Comptable. Vérifier mapping pipeline Dremio > legal_entity_financial_data.capital.",
+      sla: "J+3"
+    },
+    "PP.clients|employeur": {
+      imp: "Haute",
+      desc: (c, missing) => `${missing.toLocaleString()} valeurs manquantes sur ${c.total.toLocaleString()} lignes PP. Champ critique pour score KYC socio-professionnel et détection PEP.`,
+      act: "Vérifier règle de propagation depuis customer_job.employer. Enrichissement backlog données PP.",
+      sla: "J+7"
+    },
+    "PP.clients|code_categorie_socio_professionelle": {
+      imp: "Haute",
+      desc: (c, missing) => `${(100 - c.score).toFixed(2)}% de valeurs manquantes. Corrélé avec code_secteur_professionel et code_profession — même population impactée (${missing.toLocaleString()} lignes).`,
+      act: "Traitement groupé colonnes 3–4–5 depuis la même source Dremio customer_job.",
+      sla: "J+7"
+    },
+    "PP.clients|code_secteur_professionel": {
+      imp: "Haute",
+      desc: (c, missing) => `${(100 - c.score).toFixed(2)}% manquants. Même cause racine que categorie_socio_professionelle. Source: customer_job.professional_sector. Traitement groupé recommandé.`,
+      act: "Traitement groupé avec categorie_socio_professionelle et code_profession.",
+      sla: "J+7"
+    },
+    "PP.clients|code_profession": {
+      imp: "Haute",
+      desc: (c, missing) => `${(100 - c.score).toFixed(2)}% manquants. Même cause racine. Source: customer_job.occupation.`,
+      act: "Traitement groupé avec categorie_socio_professionelle et code_secteur_professionel.",
+      sla: "J+7"
+    },
+    "Pro.clients|chiffre_affaire": {
+      imp: "Modérée",
+      desc: (c, missing) => `${c.score.toFixed(1)}% de complétude sur Pro.clients. Champ financier critique pour scoring crédit et KYC.`,
+      act: "Vérification alimentation SI Comptable. Déclaratif possible pour indépendants.",
+      sla: "J+14"
+    },
+    "PM.adresses|code_postal": {
+      imp: "Modérée",
+      desc: (c, missing) => `${missing.toLocaleString()} adresses sans code postal sur ${c.total.toLocaleString()}. Impact géolocalisation et scoring AML/KYC.`,
+      act: "Enrichissement via référentiel postal national. Tolérance 85% temporaire acceptable.",
+      sla: "J+21"
+    },
+    "PP.clients|ville_de_naissance": {
+      imp: "Faible",
+      desc: (c, missing) => `${missing.toLocaleString()} valeurs manquantes sur ${c.total.toLocaleString()}. Héritage données anciennes. Non bloquant réglementairement.`,
+      act: "Enrichissement progressif lors de mise à jour KYC périodique. Priorité basse.",
+      sla: "J+30"
+    }
+  };
+
+  const fw = COLS.filter(c => c.flag === 'FAIL' || c.flag === 'WARN');
+  fw.sort((a, b) => a.score - b.score);
+  
+  REM = fw.map((c, idx) => {
+    const key = `${c.ds}|${c.col}`;
+    const missing = c.total - c.valides;
+    let item = DB_REM[key];
+    
+    if (!item) {
+      const isFail = c.flag === 'FAIL';
+      const imp = isFail ? (c.score < 20 ? "Critique" : "Haute") : "Modérée";
+      const sla = isFail ? (c.score < 20 ? "J+3" : "J+7") : "J+14";
+      
+      let descText = "";
+      let actText = "";
+      
+      if (c.col.includes("fatca")) {
+        descText = `Identifiant FATCA manquant pour la quasi-totalité des clients (score ${c.score.toFixed(2)}%). Obligatoire pour la conformité fiscale internationale.`;
+        actText = "Vérifier la chaîne d'alimentation et la règle de calcul de l'identifiant FATCA.";
+      } else if (c.col.includes("naissance") || c.col.includes("date")) {
+        descText = `Date de naissance manquante pour les tiers (${missing.toLocaleString()} lignes). Bloque l'identification réglementaire et le calcul d'âge.`;
+        actText = "Mettre en place un contrôle obligatoire à la saisie et initier une campagne de remédiation.";
+      } else {
+        descText = `${missing.toLocaleString()} valeurs manquantes sur ${c.total.toLocaleString()} enregistrements. Champ qualifié ${c.flag} avec un score de complétude de ${c.score.toFixed(2)}%.`;
+        actText = `Vérifier le mapping de la colonne ${c.col} dans le pipeline Dremio et la qualité de la source d'alimentation.`;
+      }
+      
+      item = {
+        imp: imp,
+        desc: () => descText,
+        act: actText,
+        sla: sla
+      };
+    }
+    
+    return {
+      pr: idx + 1,
+      col: c.col,
+      ds: c.ds,
+      s: c.score,
+      flag: c.flag,
+      imp: item.imp,
+      desc: typeof item.desc === "function" ? item.desc(c, missing) : item.desc,
+      act: item.act,
+      sla: item.sla
+    };
+  });
+  
+  // Format dynamic status header details
+  const latestDateObj = new Date(latestTimestamp);
+  const formattedLatestDate = isNaN(latestDateObj.getTime()) ? latestTimestamp : latestDateObj.toLocaleDateString('fr-FR', { day: '2-digit', month: 'long', year: 'numeric' });
+  const formattedLatestTime = isNaN(latestDateObj.getTime()) ? "" : latestDateObj.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+  
+  // Update header and status text
+  const headerTimePill = document.querySelector(".hp-dt");
+  if (headerTimePill) {
+    headerTimePill.innerHTML = `📅 ${formattedLatestDate} ${formattedLatestTime ? '&middot; ' + formattedLatestTime : ''}`;
+  }
+  
+  const statusTxt = document.getElementById("status-txt");
+  if (statusTxt) {
+    const displayDate = isNaN(latestDateObj.getTime()) ? latestTimestamp.substring(0, 10) : latestDateObj.toLocaleDateString('fr-FR');
+    statusTxt.innerHTML = `Données synchronisées &middot; ${displayDate}`;
+  }
+  
+  return true;
+}
+
+function destroyCharts() {
+  Object.keys(CH).forEach(key => {
+    if (CH[key]) {
+      CH[key].destroy();
+      delete CH[key];
+    }
+  });
+  dsInit = false;
+  tInit = false;
+}
+
+function updateDashboard() {
+  destroyCharts();
+  
+  // Reset filter dropdown values to default
+  ['fds','fflag','fthr','fsort'].forEach(id=>{
+    const el=document.getElementById(id);
+    if (el) el.value=id==='fsort'?'score_asc':'ALL';
+    if(id==='fthr' && el) el.value='0';
+  });
+  
+  applyFilters();
+  
+  const activeTab = document.querySelector('.stab.active');
+  const tabName = activeTab ? activeTab.getAttribute('onclick').match(/'([^']+)'/)[1] : 'global';
+  
+  initGlobal();
+  
+  if (tabName === 'dataset') {
+    initDS();
+  } else if (tabName === 'trend') {
+    initTrend();
+  } else if (tabName === 'remediation') {
+    renderRem();
+  } else if (tabName === 'heatmap') {
+    renderHM();
+  }
+}
+
+function loadCSVFromServer(onSuccess, onError) {
+  fetch('all_columns_history.csv')
+    .then(response => {
+      if (!response.ok) throw new Error('CORS or file missing');
+      return response.text();
+    })
+    .then(text => {
+      const records = parseCSV(text);
+      if (records.length > 0) {
+        processCSVData(records);
+        updateDashboard();
+        if (onSuccess) onSuccess();
+      } else {
+        throw new Error('Empty CSV');
+      }
+    })
+    .catch(err => {
+      console.warn('Auto-fetch failed:', err);
+      const statusTxt = document.getElementById("status-txt");
+      if (statusTxt) {
+        statusTxt.innerHTML = `<span style="color:var(--or)">⚠️ Mode démo (Glisser-déposer all_columns_history.csv pour actualiser)</span>`;
+      }
+      if (onError) onError();
+    });
+}
+
+function triggerImport() {
+  document.getElementById('csv-file-input').click();
+}
+
+function handleFileSelect(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  readFile(file);
+}
+
+function readFile(file) {
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const text = e.target.result;
+    const records = parseCSV(text);
+    if (records.length > 0) {
+      if (processCSVData(records)) {
+        updateDashboard();
+        const statusTxt = document.getElementById("status-txt");
+        if (statusTxt) {
+          statusTxt.innerHTML = `Données importées &middot; ${file.name}`;
+        }
+      }
+    } else {
+      alert("Erreur: Le fichier CSV semble vide ou invalide.");
+    }
+  };
+  reader.readAsText(file);
+}
+
+function initDragAndDrop() {
+  const overlay = document.getElementById('drag-overlay');
+  
+  window.addEventListener('dragenter', (e) => {
+    e.preventDefault();
+    overlay.classList.add('active');
+  });
+  
+  overlay.addEventListener('dragover', (e) => {
+    e.preventDefault();
+  });
+  
+  overlay.addEventListener('dragleave', (e) => {
+    e.preventDefault();
+    // Only deactivate if leaving window
+    if (e.relatedTarget === null || e.toElement === null) {
+      overlay.classList.remove('active');
+    }
+  });
+  
+  overlay.addEventListener('drop', (e) => {
+    e.preventDefault();
+    overlay.classList.remove('active');
+    
+    if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+      const file = e.dataTransfer.files[0];
+      if (file.name.endsWith('.csv')) {
+        readFile(file);
+      } else {
+        alert("Veuillez déposer un fichier CSV (.csv).");
+      }
+    }
+  });
+}
+
+/* ================================================================
+   CANVAS 3:2 RATIO
+================================================================ */
+const R=3/2;
+function resize(){
+  const a=document.getElementById('canvas-area'),f=document.getElementById('canvas-frame');
+  const aW=a.clientWidth-14,aH=a.clientHeight-14;
+  let w,h;
+  if(aW/aH>=R){h=aH;w=h*R;}else{w=aW;h=w/R;}
+  f.style.width=Math.round(w)+'px';
+  f.style.height=Math.round(h)+'px';
+  setTimeout(()=>Object.values(CH).forEach(c=>{if(c&&c.resize)c.resize();}),60);
+}
+
+/* ================================================================
+   FILTERS
+================================================================ */
+let filtered=[...COLS];
+function applyFilters(){
+  const ds=document.getElementById('fds').value;
+  const flag=document.getElementById('fflag').value;
+  const thr=parseFloat(document.getElementById('fthr').value);
+  const sort=document.getElementById('fsort').value;
+  filtered=COLS.filter(r=>{
+    if(ds!=='ALL'&&r.ds!==ds)return false;
+    if(flag!=='ALL'&&r.flag!==flag)return false;
+    if(r.score<thr&&flag==='ALL')return false;
+    return true;
+  });
+  filtered.sort((a,b)=>{
+    if(sort==='score_asc')return a.score-b.score;
+    if(sort==='score_desc')return b.score-a.score;
+    if(sort==='col_asc')return a.col.localeCompare(b.col);
+    if(sort==='ds_asc')return a.ds.localeCompare(b.ds);
+    if(sort==='total_desc')return b.total-a.total;
+    return a.score-b.score;
+  });
+  renderTable();updateKPIs();
+}
+function showFail(){document.getElementById('fflag').value='FAIL';applyFilters();}
+function resetFilters(){
+  ['fds','fflag','fthr','fsort'].forEach(id=>{
+    const el=document.getElementById(id);
+    el.value=id==='fsort'?'score_asc':'ALL';
+    if(id==='fthr')el.value='0';
+  });
+  applyFilters();
+}
+function updateKPIs(){
+  const t=filtered.length,p=filtered.filter(r=>r.flag==='PASS').length,
+    f=filtered.filter(r=>r.flag==='FAIL').length,w=filtered.filter(r=>r.flag==='WARN').length;
+  const avg=t>0?(filtered.reduce((s,r)=>s+r.score,0)/t).toFixed(1):0;
+  document.getElementById('kpi-total').textContent=t;
+  document.getElementById('kpi-score').textContent=avg+'%';
+  document.getElementById('kpi-pass').textContent=p;
+  document.getElementById('kpi-fail').textContent=f;
+  document.getElementById('kpi-warn').textContent=w;
+  document.getElementById('kpi-ppct').textContent=t>0?Math.round(p/t*100)+'% du périmètre':'—';
+  document.getElementById('tbl-count').textContent=t;
+  document.getElementById('fcount').textContent=t;
+  document.getElementById('hdr-fail').textContent='⚠ '+f+' FAIL';
+}
+
+/* ================================================================
+   TABLE
+================================================================ */
+function fmt(n){return n>=1e6?(n/1e6).toFixed(1)+'M':n>=1e3?(n/1e3).toFixed(0)+'K':String(n);}
+function renderTable(){
+  const tb=document.getElementById('tbl-body');if(!tb)return;
+  tb.innerHTML=filtered.map((r,i)=>{
+    const isF=r.flag==='FAIL',isW=r.flag==='WARN';
+    const dc=isF?'#F0481C':isW?'#EF9F27':'#22c55e';
+    const bc=isF?'#ef4444':r.score<75?'#F0481C':r.score<90?'#EF9F27':'#22c55e';
+    const fl=isF?'fl-f':isW?'fl-w':'fl-p';
+    const rc=isF?'rf':isW?'rw':'';
+    return '<tr class="'+rc+'">'+
+      '<td style="color:#9CA3AF;font-size:8px">'+(i+1)+'</td>'+
+      '<td><strong>'+r.col+'</strong></td>'+
+      '<td><span class="ds-chip">'+r.ds+'</span></td>'+
+      '<td><strong style="color:'+dc+'">'+r.score.toFixed(2)+'%</strong></td>'+
+      '<td><span class="fl-pill '+fl+'">'+r.flag+'</span></td>'+
+      '<td><div class="pbar"><div class="pbar-in" style="width:'+r.score+'%;background:'+bc+'"></div></div>'+
+        '<span style="font-size:7.5px;color:#9CA3AF">'+fmt(r.valides)+' / '+fmt(r.total)+'</span></td>'+
+      '<td class="mono">'+fmt(r.valides)+'</td>'+
+      '<td class="mono">'+fmt(r.total)+'</td>'+
+      '<td class="mono" style="color:'+dc+'">'+fmt(r.total-r.valides)+'</td>'+
+      '<td style="font-size:8.5px;color:#9CA3AF">Complétude</td>'+
+      '<td style="font-size:8.5px;color:#9CA3AF;max-width:130px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="'+r.path+'">'+r.path+'</td>'+
+    '</tr>';
+  }).join('');
+}
+
+/* ================================================================
+   CHART SETUP
+================================================================ */
+const CH={};
+const C={bl:'#05AEEF',or:'#F0481C',am:'#EF9F27',gn:'#22c55e',
+  blA:'rgba(5,174,239,.15)',orA:'rgba(240,72,28,.15)',amA:'rgba(239,159,39,.15)',gnA:'rgba(34,197,94,.15)'};
+
+const BASE={responsive:true,maintainAspectRatio:false,animation:{duration:600},
+  plugins:{legend:{labels:{font:{size:8},boxWidth:9,padding:6}},
+    tooltip:{titleFont:{size:9},bodyFont:{size:8},padding:6}}};
+
+function initGlobal(){
+  /* TREND */
+  CH.trend=new Chart(document.getElementById('trendChart'),{type:'bar',data:{
+    labels:TREND.map(t=>t.d),
+    datasets:[
+      {type:'line',label:'Score Moyen %',data:TREND.map(t=>t.s),borderColor:C.bl,backgroundColor:C.blA,borderWidth:2.5,
+       pointRadius:5,pointHoverRadius:7,pointBackgroundColor:TREND.map(t=>t.s>=90?C.gn:t.s>=85?C.am:C.or),
+       yAxisID:'yS',tension:.35,fill:true,order:1},
+      {label:'FAIL',data:TREND.map(t=>t.f),backgroundColor:C.orA,borderColor:C.or,borderWidth:1.5,yAxisID:'yC',order:2,borderRadius:2},
+      {label:'WARN',data:TREND.map(t=>t.w),backgroundColor:C.amA,borderColor:C.am,borderWidth:1.5,yAxisID:'yC',order:3,borderRadius:2}
+    ]},
+    options:{...BASE,plugins:{...BASE.plugins,tooltip:{mode:'index',intersect:false,titleFont:{size:9},bodyFont:{size:8}}},
+      scales:{
+        yS:{type:'linear',position:'left',min:70,max:100,ticks:{font:{size:7.5},callback:v=>v+'%'},grid:{color:'rgba(0,0,0,.04)'}},
+        yC:{type:'linear',position:'right',min:0,max:14,ticks:{font:{size:7.5},stepSize:2},grid:{display:false}},
+        x:{ticks:{font:{size:7.5}},grid:{display:false}}}}});
+
+  /* DONUT */
+  const p = COLS.filter(r => r.flag === 'PASS').length;
+  const f = COLS.filter(r => r.flag === 'FAIL').length;
+  const w = COLS.filter(r => r.flag === 'WARN').length;
+  const total = COLS.length;
+
+  CH.donut=new Chart(document.getElementById('donutChart'),{type:'doughnut',data:{
+    labels:[`PASS (${p})`,`FAIL (${f})`,`WARN (${w})`],
+    datasets:[{data:[p,f,w],backgroundColor:[C.bl,C.or,C.am],borderWidth:3,borderColor:'#F5F8FC',hoverOffset:8}]},
+    options:{...BASE,cutout:'65%',plugins:{
+      legend:{position:'right',labels:{font:{size:8.5},boxWidth:10,padding:8}},
+      tooltip:{callbacks:{label:ctx=>' '+ctx.label+': '+ctx.parsed+' ('+(total > 0 ? (ctx.parsed/total*100).toFixed(1) : 0)+'%)'},titleFont:{size:9},bodyFont:{size:8}}}
+    }});
+
+  /* DS BAR */
+  const dsc=DS.map(d=>d.s<90?C.or:d.s<95?C.am:C.gn);
+  CH.dsBar=new Chart(document.getElementById('dsBarChart'),{type:'bar',data:{
+    labels:DS.map(d=>d.n),
+    datasets:[{label:'Score %',data:DS.map(d=>d.s),backgroundColor:dsc,borderRadius:3,borderWidth:0}]},
+    options:{...BASE,indexAxis:'y',
+      plugins:{...BASE.plugins,legend:{display:false}},
+      scales:{x:{min:0,max:105,ticks:{font:{size:7.5},callback:v=>v+'%'},grid:{color:'rgba(0,0,0,.04)'}},
+        y:{ticks:{font:{size:7.5}},grid:{display:false}}}}});
+
+  /* DIST */
+  const crit = COLS.filter(c => c.score < 50).length;
+  const faible = COLS.filter(c => c.score >= 50 && c.score < 75).length;
+  const moyen = COLS.filter(c => c.score >= 75 && c.score < 90).length;
+  const bon = COLS.filter(c => c.score >= 90 && c.score < 95).length;
+  const exec = COLS.filter(c => c.score >= 95).length;
+
+  CH.dist=new Chart(document.getElementById('distChart'),{type:'bar',data:{
+    labels:['Critique\n<50%','Faible\n50-75%','Moyen\n75-90%','Bon\n90-95%','Excellent\n95-100%'],
+    datasets:[{label:'Nb colonnes',data:[crit,faible,moyen,bon,exec],
+      backgroundColor:['#fecaca',C.orA,C.amA,'#bbf7d0','#86efac'],
+      borderColor:['#ef4444',C.or,C.am,C.gn,C.gn],borderWidth:1,borderRadius:3}]},
+    options:{...BASE,plugins:{...BASE.plugins,legend:{display:false}},
+      scales:{x:{ticks:{font:{size:7},maxRotation:0},grid:{display:false}},
+        y:{ticks:{font:{size:7.5},stepSize:5},grid:{color:'rgba(0,0,0,.04)'}}}}});
+}
+
+/* ── DATASET CHARTS ── */
+let dsInit=false;
+function initDS(){
+  if(dsInit)return;dsInit=true;
+  const dsc=DS.map(d=>d.s<90?C.or:d.s<95?C.am:C.gn);
+  CH.dsD=new Chart(document.getElementById('dsDetailBar'),{type:'bar',data:{labels:DS.map(d=>d.n),datasets:[{label:'Score %',data:DS.map(d=>d.s),backgroundColor:dsc,borderRadius:3}]},options:{...BASE,indexAxis:'y',plugins:{...BASE.plugins,legend:{display:false}},scales:{x:{min:0,max:105,ticks:{font:{size:7.5},callback:v=>v+'%'},grid:{color:'rgba(0,0,0,.04)'}},y:{ticks:{font:{size:7.5}},grid:{display:false}}}}});
+  CH.dsS=new Chart(document.getElementById('dsStackedBar'),{type:'bar',data:{labels:DS.map(d=>d.n),datasets:[{label:'PASS',data:DS.map(d=>d.p),backgroundColor:C.blA,borderColor:C.bl,borderWidth:1,stack:'a'},{label:'WARN',data:DS.map(d=>d.w),backgroundColor:C.amA,borderColor:C.am,borderWidth:1,stack:'a'},{label:'FAIL',data:DS.map(d=>d.f),backgroundColor:C.orA,borderColor:C.or,borderWidth:1,stack:'a'}]},options:{...BASE,indexAxis:'y',scales:{x:{stacked:true,ticks:{font:{size:7.5},stepSize:2}},y:{stacked:true,ticks:{font:{size:7.5}},grid:{display:false}}}}});
+  const vols=DS.map(d=>{const m=COLS.filter(c=>c.ds===d.n);return+(m.reduce((s,c)=>s+c.total,0)/1e6).toFixed(2);});
+  CH.dsV=new Chart(document.getElementById('dsVolumeBar'),{type:'bar',data:{labels:DS.map(d=>d.n),datasets:[{label:'M lignes',data:vols,backgroundColor:C.blA,borderColor:C.bl,borderWidth:1.5,borderRadius:3}]},options:{...BASE,indexAxis:'y',plugins:{...BASE.plugins,legend:{display:false}},scales:{x:{ticks:{font:{size:7.5},callback:v=>v+'M'},grid:{color:'rgba(0,0,0,.04)'}},y:{ticks:{font:{size:7.5}},grid:{display:false}}}}});
+  const cP=DS.map(d=>{const m=COLS.filter(c=>c.ds===d.n);const tot=m.reduce((s,c)=>s+c.total,0),val=m.reduce((s,c)=>s+c.valides,0);return tot>0?+(val/tot*100).toFixed(1):0;});
+  CH.dsC=new Chart(document.getElementById('dsCoverChart'),{type:'bar',data:{labels:DS.map(d=>d.n),datasets:[{label:'Valides %',data:cP,backgroundColor:C.gnA,borderColor:C.gn,borderWidth:1,stack:'a'},{label:'Manquants %',data:cP.map(v=>+(100-v).toFixed(1)),backgroundColor:C.orA,borderColor:C.or,borderWidth:1,stack:'a'}]},options:{...BASE,indexAxis:'y',scales:{x:{stacked:true,min:0,max:100,ticks:{font:{size:7.5},callback:v=>v+'%'}},y:{stacked:true,ticks:{font:{size:7.5}},grid:{display:false}}}}});
+  const gc=document.getElementById('ds-cards');
+  gc.innerHTML=DS.map(d=>{
+    const cls=d.f>0?'cf':d.w>0?'cw':'cp',sc=d.f>0?C.or:d.w>0?C.am:C.gn;
+    const m=COLS.filter(c=>c.ds===d.n),vol=(m.reduce((s,c)=>s+c.total,0)/1e6).toFixed(1);
+    return '<div class="dsc '+cls+'"><h5>'+d.n+'</h5><div class="dsc-scr" style="color:'+sc+'">'+d.s.toFixed(1)+'%</div>'+
+      '<div class="dsc-mn">'+(d.f>0?'<span style="color:'+C.or+'">❌ '+d.f+' FAIL</span><br>':'')+
+      (d.w>0?'<span style="color:'+C.am+'">⚠ '+d.w+' WARN</span><br>':'')+
+      '<span style="color:'+C.gn+'">✅ '+d.p+' PASS</span><br>'+
+      '<span>'+d.t+' cols · '+vol+'M lgn</span></div></div>';
+  }).join('');
+}
+
+/* ── TREND CHARTS ── */
+let tInit=false;
+function initTrend(){
+  if(tInit)return;tInit=true;
+  const dl=TREND.map(t=>t.d);
+  CH.tF=new Chart(document.getElementById('trendFullChart'),{type:'bar',data:{labels:dl,datasets:[
+    {type:'line',label:'Score Moyen %',data:TREND.map(t=>t.s),borderColor:C.bl,backgroundColor:C.blA,borderWidth:2.5,pointRadius:5,pointHoverRadius:8,pointBackgroundColor:TREND.map(t=>t.s>=90?C.gn:t.s>=85?C.am:C.or),fill:true,tension:.35,yAxisID:'yS',order:1},
+    {label:'FAIL',data:TREND.map(t=>t.f),backgroundColor:C.orA,borderColor:C.or,borderWidth:1.5,yAxisID:'yC',borderRadius:2,order:2},
+    {label:'WARN',data:TREND.map(t=>t.w),backgroundColor:C.amA,borderColor:C.am,borderWidth:1.5,yAxisID:'yC',borderRadius:2,order:3}
+  ]},options:{...BASE,plugins:{...BASE.plugins,tooltip:{mode:'index',intersect:false,titleFont:{size:9},bodyFont:{size:8}}},
+    scales:{yS:{type:'linear',position:'left',min:70,max:100,ticks:{font:{size:7.5},callback:v=>v+'%'},grid:{color:'rgba(0,0,0,.04)'}},
+      yC:{type:'linear',position:'right',min:0,max:14,ticks:{font:{size:7.5},stepSize:2},grid:{display:false}},
+      x:{ticks:{font:{size:7.5}},grid:{display:false}}}}});
+  CH.tSt=new Chart(document.getElementById('trendStackChart'),{type:'bar',data:{labels:dl,datasets:[
+    {label:'PASS',data:TREND.map(t=>t.p),backgroundColor:C.blA,borderColor:C.bl,borderWidth:1,stack:'s'},
+    {label:'WARN',data:TREND.map(t=>t.w),backgroundColor:C.amA,borderColor:C.am,borderWidth:1,stack:'s'},
+    {label:'FAIL',data:TREND.map(t=>t.f),backgroundColor:C.orA,borderColor:C.or,borderWidth:1,stack:'s'}
+  ]},options:{...BASE,scales:{x:{stacked:true,ticks:{font:{size:7.5}},grid:{display:false}},y:{stacked:true,ticks:{font:{size:7.5},stepSize:5},grid:{color:'rgba(0,0,0,.04)'}}}}});
+  const del=TREND.map((t,i)=>i===0?0:+(t.s-TREND[i-1].s).toFixed(2));
+  CH.tDel=new Chart(document.getElementById('trendDeltaChart'),{type:'bar',data:{labels:dl,datasets:[{label:'Delta %',data:del,
+    backgroundColor:del.map(d=>d>=0?C.gnA:C.orA),borderColor:del.map(d=>d>=0?C.gn:C.or),borderWidth:1.5,borderRadius:3}]},
+    options:{...BASE,plugins:{...BASE.plugins,tooltip:{callbacks:{label:ctx=>' Δ '+(ctx.parsed.y>0?'+':'')+ctx.parsed.y.toFixed(2)+'%'},titleFont:{size:9},bodyFont:{size:8}}},
+      scales:{x:{ticks:{font:{size:7.5}},grid:{display:false}},
+        y:{ticks:{font:{size:7.5},callback:v=>(v>0?'+':'')+v+'%'},grid:{color:'rgba(0,0,0,.04)'}}}}});
+}
+
+/* ── REMEDIATION ── */
+function renderRem(){
+  document.getElementById('rem-list').innerHTML=REM.map(r=>{
+    const isF=r.flag==='FAIL';
+    return '<div class="rem-card '+(isF?'':'rw')+'">'+
+      '<div class="rprio '+(isF?'':'rpw')+'">'+r.pr+'</div>'+
+      '<div class="ri"><h4>'+r.col+' <span style="font-size:9.5px;font-weight:400;color:#9CA3AF">· '+r.ds+'</span></h4>'+
+      '<div class="ri-ds">Dataset : '+r.ds+' · Impact : '+r.imp+' · Règle : Complétude</div>'+
+      '<p><strong>Problème :</strong> '+r.desc+'</p>'+
+      '<p class="ri-act"><strong>→ Action :</strong> '+r.act+'</p></div>'+
+      '<div class="rm"><div class="rm-s '+(isF?'':'rms-w')+'">'+r.s.toFixed(1)+'%</div>'+
+      '<span class="rm-sla '+(isF?'':'rsw')+'">SLA : '+r.sla+'</span></div></div>';
+  }).join('');
+}
+
+/* ── HEATMAP ── */
+function renderHM(){
+  const dsets=DS.map(d=>d.n);
+  const cols=[...new Set(COLS.map(c=>c.col))].sort();
+  const lk={};COLS.forEach(c=>{lk[c.ds+'|'+c.col]=c.score;});
+  const hc=s=>s===null?'#F1F5F9':s<50?'#fecaca':s<75?'#fed7aa':s<90?'#fef08a':s<95?'#bbf7d0':'#86efac';
+  const tc=s=>s===null?'#ccc':s<75?'#7f1d1d':s<90?'#713f12':'#14532d';
+  let t='<table class="hmt"><thead><tr><th class="rl">Dataset \ Colonne</th>';
+  cols.forEach(c=>{t+='<th title="'+c+'">'+(c.length>10?c.substring(0,10)+'…':c)+'</th>';});
+  t+='</tr></thead><tbody>';
+  dsets.forEach(ds=>{
+    t+='<tr><td class="rl">'+ds+'</td>';
+    cols.forEach(col=>{
+      const k=ds+'|'+col,s=lk[k]!==undefined?lk[k]:null;
+      t+='<td style="background:'+hc(s)+';color:'+tc(s)+'" title="'+col+' @ '+ds+' : '+(s!==null?s.toFixed(1)+'%':'N/A')+'">'+(s!==null?s.toFixed(0)+'%':'—')+'</td>';
+    });
+    t+='</tr>';
+  });
+  t+='</tbody></table>';
+  document.getElementById('hm-body').innerHTML=t;
+}
+
+/* ================================================================
+   TAB SWITCH
+================================================================ */
+const VL={global:'Vue Globale',detail:'Détail Colonnes',dataset:'Par Dataset',trend:'Tendance',remediation:'Remédiation',heatmap:'Heatmap'};
+function switchTab(n,el){
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  document.querySelectorAll('.stab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('view-'+n).classList.add('active');
+  el.classList.add('active');
+  document.getElementById('view-badge').textContent=VL[n]||n;
+  if(n==='dataset'){initDS();setTimeout(()=>Object.values(CH).forEach(c=>{if(c&&c.resize)c.resize();}),100);}
+  if(n==='trend'){initTrend();setTimeout(()=>Object.values(CH).forEach(c=>{if(c&&c.resize)c.resize();}),100);}
+  if(n==='remediation')renderRem();
+  if(n==='heatmap')renderHM();
+}
+
+/* ================================================================
+   UTILS
+================================================================ */
+function exportCSV(){
+  const h='Colonne,Dataset,Score%,Statut,Valides,Total,Manquants,Règle,Chemin';
+  const rows=filtered.map(r=>r.col+','+r.ds+','+r.score+','+r.flag+','+r.valides+','+r.total+','+(r.total-r.valides)+',Complétude,'+r.path);
+  const b=new Blob([h+'\n'+rows.join('\n')],{type:'text/csv;charset=utf-8;'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='kyc_dq_19jun2026.csv';a.click();
+}
+function doRefresh(){
+  const b=document.getElementById('btn-refresh');
+  b.style.color='#05AEEF';b.textContent='↻';
+  document.getElementById('status-txt').textContent='Actualisation…';
+  loadCSVFromServer(() => {
+    b.style.color='';
+    b.textContent='⟳';
+  }, () => {
+    b.style.color='';
+    b.textContent='⟳';
+  });
+}
+function toggleFS(){if(!document.fullscreenElement)document.documentElement.requestFullscreen();else document.exitFullscreen();}
+function handleFit(v){if(v==='fit')resize();else{const f=document.getElementById('canvas-frame');f.style.width='100%';f.style.height='auto';}}
+
+/* ================================================================
+   INIT
+================================================================ */
+window.addEventListener('load',()=>{
+  resize();
+  initDragAndDrop();
+  loadCSVFromServer();
+});
+window.addEventListener('resize',resize);
+</script>
+
+<!-- Drag and Drop Overlay -->
+<div id="drag-overlay" class="drag-overlay">
+  <div class="drag-overlay-inner">
+    <div class="icon">📂</div>
+    <h2>Déposez all_columns_history.csv ici</h2>
+    <p>Le tableau de bord sera mis à jour instantanément.</p>
+  </div>
+</div>
+
+</body>
+</html>

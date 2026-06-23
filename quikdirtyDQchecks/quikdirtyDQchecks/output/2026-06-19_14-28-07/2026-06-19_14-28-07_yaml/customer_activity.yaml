@@ -1,0 +1,42 @@
+table: customer_activity
+run_timestamp: '2026-06-19T14:28:08'
+total_lignes: 92027
+table_score_pct: 100.0
+table_flag: PASS
+columns:
+- dremio_col: type_secteur_activite
+  virt_col: main
+  virt_full_path: VIRTUALISATION.staging-nova-referentieltiers.customer_activity.main
+  dataset: CIHOne.CLIENTS.Personnes_Morales.clients
+  domain: PTP-TIE-POR
+  rule: Complétude
+  total_lignes: 92027
+  valides: 92027
+  score_pct: 100.0
+  flag: PASS
+  error: null
+  timestamp: '2026-06-19T14:28:08'
+- dremio_col: branche_activite
+  virt_col: branch
+  virt_full_path: VIRTUALISATION.staging-nova-referentieltiers.customer_activity.branch
+  dataset: CIHOne.CLIENTS.Personnes_Morales.clients
+  domain: PTP-TIE-POR
+  rule: Complétude
+  total_lignes: 92027
+  valides: 92027
+  score_pct: 100.0
+  flag: PASS
+  error: null
+  timestamp: '2026-06-19T14:28:08'
+- dremio_col: identifiant_fatca
+  virt_col: ape_code
+  virt_full_path: VIRTUALISATION.staging-nova-referentieltiers.customer_activity.ape_code
+  dataset: CIHOne.CLIENTS.Personnes_Morales.clients
+  domain: PTP-TIE-POR
+  rule: Complétude
+  total_lignes: 92027
+  valides: 92027
+  score_pct: 100.0
+  flag: PASS
+  error: null
+  timestamp: '2026-06-19T14:28:08'

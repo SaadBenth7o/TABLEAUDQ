@@ -1,0 +1,7 @@
+dremio_col,virt_full_path,dataset,domain,rule,total_lignes,valides,score_pct,flag,error,timestamp
+codepaysdenationalite,VIRTUALISATION.staging-nova-referentieltiers.legal_entity_description.nationality_country,CIHOne.CLIENTS.Personnes_Morales.associes,PTP-TIE-POR,Complétude,91508,90315,98.70,PASS,,2026-06-23T10:38:44
+code_pays_de_nationalite,VIRTUALISATION.staging-nova-referentieltiers.legal_entity_description.nationality_country,CIHOne.CLIENTS.Personnes_Morales.clients,PTP-TIE-POR,Complétude,91508,90315,98.70,PASS,,2026-06-23T10:38:44
+codepaysdedomiciliation,VIRTUALISATION.staging-nova-referentieltiers.legal_entity_description.domicile_country,CIHOne.CLIENTS.Personnes_Morales.associes,PTP-TIE-POR,Complétude,91508,91491,99.98,PASS,,2026-06-23T10:38:44
+code_pays_de_domiciliation,VIRTUALISATION.staging-nova-referentieltiers.legal_entity_description.domicile_country,CIHOne.CLIENTS.Personnes_Morales.clients,PTP-TIE-POR,Complétude,91508,91491,99.98,PASS,,2026-06-23T10:38:44
+datecreationjuridique,VIRTUALISATION.staging-nova-referentieltiers.legal_entity_description.creation_date,CIHOne.CLIENTS.Personnes_Morales.gerants,PTP-TIE-POR,Complétude,91508,90197,98.57,PASS,,2026-06-23T10:38:44
+raisonsocial,VIRTUALISATION.staging-nova-referentieltiers.legal_entity_description.corporate_name,CIHOne.CLIENTS.Personnes_Morales.gerants,PTP-TIE-POR,Complétude,91508,91508,100.00,PASS,,2026-06-23T10:38:44

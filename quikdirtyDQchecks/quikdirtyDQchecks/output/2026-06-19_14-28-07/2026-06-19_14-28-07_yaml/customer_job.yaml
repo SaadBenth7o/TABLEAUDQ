@@ -1,0 +1,66 @@
+table: customer_job
+run_timestamp: '2026-06-19T14:28:08'
+total_lignes: 4569367
+table_score_pct: 53.01
+table_flag: FAIL
+columns:
+- dremio_col: code_categorie_socio_professionelle
+  virt_col: socioprofessional_category
+  virt_full_path: VIRTUALISATION.staging-nova-referentieltiers.customer_job.socioprofessional_category
+  dataset: CIHOne.CLIENTS.Personnes_Physiques.clients
+  domain: PTP-TIE-POR
+  rule: Complétude
+  total_lignes: 4569367
+  valides: 2093114
+  score_pct: 45.81
+  flag: FAIL
+  error: null
+  timestamp: '2026-06-19T14:28:08'
+- dremio_col: situation_professionelle
+  virt_col: professional_situation
+  virt_full_path: VIRTUALISATION.staging-nova-referentieltiers.customer_job.professional_situation
+  dataset: CIHOne.CLIENTS.Personnes_Physiques.clients
+  domain: PTP-TIE-POR
+  rule: Complétude
+  total_lignes: 4569367
+  valides: 4569367
+  score_pct: 100.0
+  flag: PASS
+  error: null
+  timestamp: '2026-06-19T14:28:08'
+- dremio_col: code_secteur_professionel
+  virt_col: professional_sector
+  virt_full_path: VIRTUALISATION.staging-nova-referentieltiers.customer_job.professional_sector
+  dataset: CIHOne.CLIENTS.Personnes_Physiques.clients
+  domain: PTP-TIE-POR
+  rule: Complétude
+  total_lignes: 4569367
+  valides: 2093167
+  score_pct: 45.81
+  flag: FAIL
+  error: null
+  timestamp: '2026-06-19T14:28:08'
+- dremio_col: code_profession
+  virt_col: occupation
+  virt_full_path: VIRTUALISATION.staging-nova-referentieltiers.customer_job.occupation
+  dataset: CIHOne.CLIENTS.Personnes_Physiques.clients
+  domain: PTP-TIE-POR
+  rule: Complétude
+  total_lignes: 4569367
+  valides: 2093157
+  score_pct: 45.81
+  flag: FAIL
+  error: null
+  timestamp: '2026-06-19T14:28:08'
+- dremio_col: employeur
+  virt_col: employer
+  virt_full_path: VIRTUALISATION.staging-nova-referentieltiers.customer_job.employer
+  dataset: CIHOne.CLIENTS.Personnes_Physiques.clients
+  domain: PTP-TIE-POR
+  rule: Complétude
+  total_lignes: 4569367
+  valides: 1260918
+  score_pct: 27.6
+  flag: FAIL
+  error: null
+  timestamp: '2026-06-19T14:28:08'

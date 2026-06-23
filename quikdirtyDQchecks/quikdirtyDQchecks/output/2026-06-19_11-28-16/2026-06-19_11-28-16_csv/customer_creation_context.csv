@@ -1,0 +1,3 @@
+dremio_col,virt_full_path,dataset,domain,rule,total_lignes,valides,score_pct,flag,error,timestamp
+lieu_creation,VIRTUALISATION.staging-nova-referentieltiers.customer_creation_context.user_identifier,CIHOne.CLIENTS.Personnes_Morales.clients,PTP-TIE-POR,Complétude,0,0,N/A,ERROR,Query returned no data,2026-06-19T11:28:17
+lieu_creation,VIRTUALISATION.staging-nova-referentieltiers.customer_creation_context.user_identifier,CIHOne.CLIENTS.Personnes_Physiques.clients,PTP-TIE-POR,Complétude,0,0,N/A,ERROR,Query returned no data,2026-06-19T11:28:17

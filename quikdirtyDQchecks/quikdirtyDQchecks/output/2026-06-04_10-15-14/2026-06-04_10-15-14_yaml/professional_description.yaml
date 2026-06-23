@@ -1,0 +1,66 @@
+﻿table: professional_description
+run_timestamp: '2026-06-04T10:15:15'
+total_lignes: 29488
+table_score_pct: 54.3
+table_flag: FAIL
+columns:
+- dremio_col: chiffre_affaire
+  virt_col: turnover
+  virt_full_path: VIRTUALISATION.staging-nova-referentieltiers.professional_description.turnover
+  dataset: CIHOne.CLIENTS.Professionnels.clients
+  domain: PTP-TIE-POR
+  rule: Completude
+  total_lignes: 29488
+  valides: 21084
+  score_pct: 71.5
+  flag: WARN
+  error: null
+  timestamp: '2026-06-04T10:15:15'
+- dremio_col: identifiant_fatca
+  virt_col: fatca_identification_number
+  virt_full_path: VIRTUALISATION.staging-nova-referentieltiers.professional_description.fatca_identification_number
+  dataset: CIHOne.CLIENTS.Professionnels.clients
+  domain: PTP-TIE-POR
+  rule: Completude
+  total_lignes: 29488
+  valides: 1
+  score_pct: 0.0
+  flag: FAIL
+  error: null
+  timestamp: '2026-06-04T10:15:15'
+- dremio_col: raison_sociale
+  virt_col: company_name
+  virt_full_path: VIRTUALISATION.staging-nova-referentieltiers.professional_description.company_name
+  dataset: CIHOne.CLIENTS.Professionnels.clients
+  domain: PTP-TIE-POR
+  rule: Completude
+  total_lignes: 29488
+  valides: 29488
+  score_pct: 100.0
+  flag: PASS
+  error: null
+  timestamp: '2026-06-04T10:15:15'
+- dremio_col: company_name
+  virt_col: company_name
+  virt_full_path: VIRTUALISATION.staging-nova-referentieltiers.professional_description.company_name
+  dataset: CIHOne.CLIENTS.Professionnels.relations_professional_personnes_physiques
+  domain: PTP-TIE-POR
+  rule: Completude
+  total_lignes: 29488
+  valides: 29488
+  score_pct: 100.0
+  flag: PASS
+  error: null
+  timestamp: '2026-06-04T10:15:15'
+- dremio_col: capital
+  virt_col: capital
+  virt_full_path: VIRTUALISATION.staging-nova-referentieltiers.professional_description.capital
+  dataset: CIHOne.CLIENTS.Professionnels.clients
+  domain: PTP-TIE-POR
+  rule: Completude
+  total_lignes: 29488
+  valides: 0
+  score_pct: 0.0
+  flag: FAIL
+  error: null
+  timestamp: '2026-06-04T10:15:15'

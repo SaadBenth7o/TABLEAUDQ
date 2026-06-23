@@ -1,0 +1,66 @@
+table: customer_job
+run_timestamp: '2026-06-16T09:48:11'
+total_lignes: 4564935
+table_score_pct: 53.01
+table_flag: FAIL
+columns:
+- dremio_col: code_categorie_socio_professionelle
+  virt_col: socioprofessional_category
+  virt_full_path: VIRTUALISATION.staging-nova-referentieltiers.customer_job.socioprofessional_category
+  dataset: CIHOne.CLIENTS.Personnes_Physiques.clients
+  domain: PTP-TIE-POR
+  rule: Complétude
+  total_lignes: 4564935
+  valides: 2091776
+  score_pct: 45.82
+  flag: FAIL
+  error: null
+  timestamp: '2026-06-16T09:48:11'
+- dremio_col: situation_professionelle
+  virt_col: professional_situation
+  virt_full_path: VIRTUALISATION.staging-nova-referentieltiers.customer_job.professional_situation
+  dataset: CIHOne.CLIENTS.Personnes_Physiques.clients
+  domain: PTP-TIE-POR
+  rule: Complétude
+  total_lignes: 4564935
+  valides: 4564935
+  score_pct: 100.0
+  flag: PASS
+  error: null
+  timestamp: '2026-06-16T09:48:11'
+- dremio_col: code_secteur_professionel
+  virt_col: professional_sector
+  virt_full_path: VIRTUALISATION.staging-nova-referentieltiers.customer_job.professional_sector
+  dataset: CIHOne.CLIENTS.Personnes_Physiques.clients
+  domain: PTP-TIE-POR
+  rule: Complétude
+  total_lignes: 4564935
+  valides: 2091829
+  score_pct: 45.82
+  flag: FAIL
+  error: null
+  timestamp: '2026-06-16T09:48:11'
+- dremio_col: code_profession
+  virt_col: occupation
+  virt_full_path: VIRTUALISATION.staging-nova-referentieltiers.customer_job.occupation
+  dataset: CIHOne.CLIENTS.Personnes_Physiques.clients
+  domain: PTP-TIE-POR
+  rule: Complétude
+  total_lignes: 4564935
+  valides: 2091819
+  score_pct: 45.82
+  flag: FAIL
+  error: null
+  timestamp: '2026-06-16T09:48:11'
+- dremio_col: employeur
+  virt_col: employer
+  virt_full_path: VIRTUALISATION.staging-nova-referentieltiers.customer_job.employer
+  dataset: CIHOne.CLIENTS.Personnes_Physiques.clients
+  domain: PTP-TIE-POR
+  rule: Complétude
+  total_lignes: 4564935
+  valides: 1260556
+  score_pct: 27.61
+  flag: FAIL
+  error: null
+  timestamp: '2026-06-16T09:48:11'

@@ -1,0 +1,30 @@
+table: legal_entity_financial_data
+run_timestamp: '2026-06-19T11:37:36'
+total_lignes: 90519
+table_score_pct: 92.17
+table_flag: PASS
+columns:
+- dremio_col: chiffre_affaire
+  virt_col: turnover
+  virt_full_path: VIRTUALISATION.staging-nova-referentieltiers.legal_entity_financial_data.turnover
+  dataset: CIHOne.CLIENTS.Personnes_Morales.clients
+  domain: PTP-TIE-POR
+  rule: Complétude
+  total_lignes: 90519
+  valides: 83625
+  score_pct: 92.38
+  flag: PASS
+  error: null
+  timestamp: '2026-06-19T11:37:36'
+- dremio_col: capital
+  virt_col: capital
+  virt_full_path: VIRTUALISATION.staging-nova-referentieltiers.legal_entity_financial_data.capital
+  dataset: CIHOne.CLIENTS.Personnes_Morales.clients
+  domain: PTP-TIE-POR
+  rule: Complétude
+  total_lignes: 90519
+  valides: 83249
+  score_pct: 91.97
+  flag: PASS
+  error: null
+  timestamp: '2026-06-19T11:37:36'

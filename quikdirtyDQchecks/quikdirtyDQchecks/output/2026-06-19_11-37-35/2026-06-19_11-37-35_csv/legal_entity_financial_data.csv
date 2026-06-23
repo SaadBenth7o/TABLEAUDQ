@@ -1,0 +1,3 @@
+dremio_col,virt_full_path,dataset,domain,rule,total_lignes,valides,score_pct,flag,error,timestamp
+chiffre_affaire,VIRTUALISATION.staging-nova-referentieltiers.legal_entity_financial_data.turnover,CIHOne.CLIENTS.Personnes_Morales.clients,PTP-TIE-POR,Complétude,90519,83625,92.38,PASS,,2026-06-19T11:37:36
+capital,VIRTUALISATION.staging-nova-referentieltiers.legal_entity_financial_data.capital,CIHOne.CLIENTS.Personnes_Morales.clients,PTP-TIE-POR,Complétude,90519,83249,91.97,PASS,,2026-06-19T11:37:36

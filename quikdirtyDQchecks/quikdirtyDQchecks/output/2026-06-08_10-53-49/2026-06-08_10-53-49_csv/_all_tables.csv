@@ -1,0 +1,13 @@
+table,total_lignes,score_pct,flag,nb_checks,nb_pass,nb_warn,nb_fail,nb_error,timestamp
+professional_description,29515,67.88,FAIL,4,2,1,1,0,2026-06-08T10:53:49
+professional_activity,29507,100.00,PASS,2,2,0,0,0,2026-06-08T10:53:49
+natural_person_description,4607610,98.84,PASS,13,12,1,0,0,2026-06-08T10:53:49
+legal_entity_financial_data,90246,92.16,PASS,2,2,0,0,0,2026-06-08T10:53:49
+legal_entity_description,91147,99.32,PASS,6,6,0,0,0,2026-06-08T10:53:49
+customers,4728274,75.00,WARN,4,3,0,0,1,2026-06-08T10:53:49
+customer_job,4552894,53.05,FAIL,5,1,0,4,0,2026-06-08T10:53:49
+customer_activity,91739,100.00,PASS,3,3,0,0,0,2026-06-08T10:53:49
+company_shareholders,98079,25.37,FAIL,2,0,0,2,0,2026-06-08T10:53:49
+customer_mail,8163895,71.30,WARN,4,2,1,0,1,2026-06-08T10:53:49
+customer_creation_context,9487807,99.15,PASS,2,2,0,0,0,2026-06-08T10:53:49
+customer_segmentation,78,98.72,PASS,1,1,0,0,0,2026-06-08T10:53:49

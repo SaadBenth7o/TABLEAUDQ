@@ -1,0 +1,3 @@
+dremio_col,virt_full_path,dataset,domain,rule,total_lignes,valides,score_pct,flag,error,timestamp
+genre,VIRTUALISATION.staging-nova-referentieltiers.company_shareholders.gendre,CIHOne.CLIENTS.Personnes_Morales.associes,PTP-TIE-POR,Complétude,0,0,N/A,ERROR,Query returned no data,2026-06-23T10:38:44
+date_naissance,VIRTUALISATION.staging-nova-referentieltiers.company_shareholders.birthdate,CIHOne.CLIENTS.Personnes_Morales.associes,PTP-TIE-POR,Complétude,0,0,N/A,ERROR,Query returned no data,2026-06-23T10:38:44

@@ -1,0 +1,78 @@
+table: legal_entity_description
+run_timestamp: '2026-06-19T11:28:17'
+total_lignes: null
+table_score_pct: 0.0
+table_flag: FAIL
+columns:
+- dremio_col: codepaysdenationalite
+  virt_col: nationality_country
+  virt_full_path: VIRTUALISATION.staging-nova-referentieltiers.legal_entity_description.nationality_country
+  dataset: CIHOne.CLIENTS.Personnes_Morales.associes
+  domain: PTP-TIE-POR
+  rule: Complétude
+  total_lignes: null
+  valides: null
+  score_pct: null
+  flag: ERROR
+  error: Query returned no data
+  timestamp: '2026-06-19T11:28:17'
+- dremio_col: code_pays_de_nationalite
+  virt_col: nationality_country
+  virt_full_path: VIRTUALISATION.staging-nova-referentieltiers.legal_entity_description.nationality_country
+  dataset: CIHOne.CLIENTS.Personnes_Morales.clients
+  domain: PTP-TIE-POR
+  rule: Complétude
+  total_lignes: null
+  valides: null
+  score_pct: null
+  flag: ERROR
+  error: Query returned no data
+  timestamp: '2026-06-19T11:28:17'
+- dremio_col: codepaysdedomiciliation
+  virt_col: domicile_country
+  virt_full_path: VIRTUALISATION.staging-nova-referentieltiers.legal_entity_description.domicile_country
+  dataset: CIHOne.CLIENTS.Personnes_Morales.associes
+  domain: PTP-TIE-POR
+  rule: Complétude
+  total_lignes: null
+  valides: null
+  score_pct: null
+  flag: ERROR
+  error: Query returned no data
+  timestamp: '2026-06-19T11:28:17'
+- dremio_col: code_pays_de_domiciliation
+  virt_col: domicile_country
+  virt_full_path: VIRTUALISATION.staging-nova-referentieltiers.legal_entity_description.domicile_country
+  dataset: CIHOne.CLIENTS.Personnes_Morales.clients
+  domain: PTP-TIE-POR
+  rule: Complétude
+  total_lignes: null
+  valides: null
+  score_pct: null
+  flag: ERROR
+  error: Query returned no data
+  timestamp: '2026-06-19T11:28:17'
+- dremio_col: datecreationjuridique
+  virt_col: creation_date
+  virt_full_path: VIRTUALISATION.staging-nova-referentieltiers.legal_entity_description.creation_date
+  dataset: CIHOne.CLIENTS.Personnes_Morales.gerants
+  domain: PTP-TIE-POR
+  rule: Complétude
+  total_lignes: null
+  valides: null
+  score_pct: null
+  flag: ERROR
+  error: Query returned no data
+  timestamp: '2026-06-19T11:28:17'
+- dremio_col: raisonsocial
+  virt_col: corporate_name
+  virt_full_path: VIRTUALISATION.staging-nova-referentieltiers.legal_entity_description.corporate_name
+  dataset: CIHOne.CLIENTS.Personnes_Morales.gerants
+  domain: PTP-TIE-POR
+  rule: Complétude
+  total_lignes: null
+  valides: null
+  score_pct: null
+  flag: ERROR
+  error: Query returned no data
+  timestamp: '2026-06-19T11:28:17'

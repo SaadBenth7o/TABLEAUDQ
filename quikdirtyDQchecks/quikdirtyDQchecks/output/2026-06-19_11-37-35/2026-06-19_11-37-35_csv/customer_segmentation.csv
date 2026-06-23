@@ -1,0 +1,2 @@
+dremio_col,virt_full_path,dataset,domain,rule,total_lignes,valides,score_pct,flag,error,timestamp
+code_segment,VIRTUALISATION.staging-nova-referentieltiers.customer_segmentation.segment_number,CIHOne.CLIENTS.Personnes_Physiques.clients,PTP-TIE-POR,Complétude,78,77,98.72,PASS,,2026-06-19T11:37:36

@@ -1,0 +1,18 @@
+﻿table: customer_segmentation
+run_timestamp: '2026-06-09T10:36:19'
+total_lignes: 78
+table_score_pct: 98.72
+table_flag: PASS
+columns:
+- dremio_col: code_segment
+  virt_col: segment_number
+  virt_full_path: VIRTUALISATION.staging-nova-referentieltiers.customer_segmentation.segment_number
+  dataset: CIHOne.CLIENTS.Personnes_Physiques.clients
+  domain: PTP-TIE-POR
+  rule: Completude
+  total_lignes: 78
+  valides: 77
+  score_pct: 98.72
+  flag: PASS
+  error: null
+  timestamp: '2026-06-09T10:36:19'

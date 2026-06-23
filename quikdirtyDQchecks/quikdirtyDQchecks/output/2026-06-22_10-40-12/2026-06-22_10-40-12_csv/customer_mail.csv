@@ -1,0 +1,5 @@
+dremio_col,virt_full_path,dataset,domain,rule,total_lignes,valides,score_pct,flag,error,timestamp
+adresse,VIRTUALISATION.staging-nova-referentieltiers.customer_mail.complete_adress,CIHOne.CLIENTS.Personnes_Morales.adresses,PTP-TIE-POR,Complétude,0,0,N/A,ERROR,Query returned no data,2026-06-22T10:40:13
+code_postal,VIRTUALISATION.staging-nova-referentieltiers.customer_mail.zip_code,CIHOne.CLIENTS.Personnes_Morales.adresses,PTP-TIE-POR,Complétude,8183811,6968015,85.14,WARN,,2026-06-22T10:40:13
+code_ville,VIRTUALISATION.staging-nova-referentieltiers.customer_mail.city,CIHOne.CLIENTS.Personnes_Morales.adresses,PTP-TIE-POR,Complétude,8183811,8155229,99.65,PASS,,2026-06-22T10:40:13
+code_pays,VIRTUALISATION.staging-nova-referentieltiers.customer_mail.country_code,CIHOne.CLIENTS.Personnes_Morales.adresses,PTP-TIE-POR,Complétude,8183811,8182024,99.98,PASS,,2026-06-22T10:40:13

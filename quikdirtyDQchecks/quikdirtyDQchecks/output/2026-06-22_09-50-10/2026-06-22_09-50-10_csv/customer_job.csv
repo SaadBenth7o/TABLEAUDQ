@@ -1,0 +1,6 @@
+dremio_col,virt_full_path,dataset,domain,rule,total_lignes,valides,score_pct,flag,error,timestamp
+code_categorie_socio_professionelle,VIRTUALISATION.staging-nova-referentieltiers.customer_job.socioprofessional_category,CIHOne.CLIENTS.Personnes_Physiques.clients,PTP-TIE-POR,Complétude,4571894,2093870,45.80,FAIL,,2026-06-22T09:50:11
+situation_professionelle,VIRTUALISATION.staging-nova-referentieltiers.customer_job.professional_situation,CIHOne.CLIENTS.Personnes_Physiques.clients,PTP-TIE-POR,Complétude,4571894,4571894,100.00,PASS,,2026-06-22T09:50:11
+code_secteur_professionel,VIRTUALISATION.staging-nova-referentieltiers.customer_job.professional_sector,CIHOne.CLIENTS.Personnes_Physiques.clients,PTP-TIE-POR,Complétude,4571894,2093923,45.80,FAIL,,2026-06-22T09:50:11
+code_profession,VIRTUALISATION.staging-nova-referentieltiers.customer_job.occupation,CIHOne.CLIENTS.Personnes_Physiques.clients,PTP-TIE-POR,Complétude,4571894,2093913,45.80,FAIL,,2026-06-22T09:50:11
+employeur,VIRTUALISATION.staging-nova-referentieltiers.customer_job.employer,CIHOne.CLIENTS.Personnes_Physiques.clients,PTP-TIE-POR,Complétude,4571894,1261109,27.58,FAIL,,2026-06-22T09:50:11

@@ -1,0 +1,54 @@
+table: customer_mail
+run_timestamp: '2026-06-16T09:48:11'
+total_lignes: 8176499
+table_score_pct: 71.2
+table_flag: WARN
+columns:
+- dremio_col: adresse
+  virt_col: complete_adress
+  virt_full_path: VIRTUALISATION.staging-nova-referentieltiers.customer_mail.complete_adress
+  dataset: CIHOne.CLIENTS.Personnes_Morales.adresses
+  domain: PTP-TIE-POR
+  rule: Complétude
+  total_lignes: null
+  valides: null
+  score_pct: null
+  flag: ERROR
+  error: Query returned no data
+  timestamp: '2026-06-16T09:48:11'
+- dremio_col: code_postal
+  virt_col: zip_code
+  virt_full_path: VIRTUALISATION.staging-nova-referentieltiers.customer_mail.zip_code
+  dataset: CIHOne.CLIENTS.Personnes_Morales.adresses
+  domain: PTP-TIE-POR
+  rule: Complétude
+  total_lignes: 8176499
+  valides: 6963495
+  score_pct: 85.16
+  flag: WARN
+  error: null
+  timestamp: '2026-06-16T09:48:11'
+- dremio_col: code_ville
+  virt_col: city
+  virt_full_path: VIRTUALISATION.staging-nova-referentieltiers.customer_mail.city
+  dataset: CIHOne.CLIENTS.Personnes_Morales.adresses
+  domain: PTP-TIE-POR
+  rule: Complétude
+  total_lignes: 8176499
+  valides: 8147930
+  score_pct: 99.65
+  flag: PASS
+  error: null
+  timestamp: '2026-06-16T09:48:11'
+- dremio_col: code_pays
+  virt_col: country_code
+  virt_full_path: VIRTUALISATION.staging-nova-referentieltiers.customer_mail.country_code
+  dataset: CIHOne.CLIENTS.Personnes_Morales.adresses
+  domain: PTP-TIE-POR
+  rule: Complétude
+  total_lignes: 8176499
+  valides: 8174711
+  score_pct: 99.98
+  flag: PASS
+  error: null
+  timestamp: '2026-06-16T09:48:11'

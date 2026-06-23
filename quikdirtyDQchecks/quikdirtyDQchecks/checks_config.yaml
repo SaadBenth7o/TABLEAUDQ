@@ -1,0 +1,1522 @@
+generated_at: '2026-06-15T16:23:50'
+source_file: Stewardship_Workshop_Template_Tiers_Counterparties_fixed.xlsx
+source_sheet: Quality_checks_poc
+tables:
+  professional_description:
+    checks:
+    - domain: PTP-TIE-POR
+      dataset: CIHOne.CLIENTS.Professionnels.clients
+      dremio_col: chiffre_affaire
+      virt_col: turnover
+      virt_full_path: VIRTUALISATION.staging-nova-referentieltiers.professional_description.turnover
+      raw_col: turnover
+      rule: Complétude
+      sql: '-- Score Complétude — professional_description.turnover
+
+        SELECT
+
+        COUNT(*) AS total_lignes,
+
+        COUNT(t.turnover) AS valides,
+
+        COUNT(t.turnover) * 100.0 / NULLIF(COUNT(*), 0) AS score_completude_pct
+
+        FROM VIRTUALISATION."staging-nova-referentieltiers".professional_description
+        t;'
+      query_id: 8b3b964e7c61
+    - domain: PTP-TIE-POR
+      dataset: CIHOne.CLIENTS.Professionnels.clients
+      dremio_col: raison_sociale
+      virt_col: company_name
+      virt_full_path: VIRTUALISATION.staging-nova-referentieltiers.professional_description.company_name
+      raw_col: company_name
+      rule: Complétude
+      sql: '-- Score Complétude — professional_description.company_name
+
+        SELECT
+
+        COUNT(*) AS total_lignes,
+
+        COUNT(CASE WHEN t.company_name IS NOT NULL
+
+        AND TRIM(t.company_name) <> '''' THEN 1 END) AS valides,
+
+        COUNT(CASE WHEN t.company_name IS NOT NULL
+
+        AND TRIM(t.company_name) <> '''' THEN 1 END) * 100.0
+
+        / NULLIF(COUNT(*), 0) AS score_completude_pct
+
+        FROM VIRTUALISATION."staging-nova-referentieltiers".professional_description
+        t;'
+      query_id: cb05f45f09cb
+    - domain: PTP-TIE-POR
+      dataset: CIHOne.CLIENTS.Professionnels.relations_professional_personnes_physiques
+      dremio_col: company_name
+      virt_col: company_name
+      virt_full_path: VIRTUALISATION.staging-nova-referentieltiers.professional_description.company_name
+      raw_col: company_name
+      rule: Complétude
+      sql: '-- Score Complétude — professional_description.company_name
+
+        SELECT
+
+        COUNT(*) AS total_lignes,
+
+        COUNT(CASE WHEN t.company_name IS NOT NULL
+
+        AND TRIM(t.company_name) <> '''' THEN 1 END) AS valides,
+
+        COUNT(CASE WHEN t.company_name IS NOT NULL
+
+        AND TRIM(t.company_name) <> '''' THEN 1 END) * 100.0
+
+        / NULLIF(COUNT(*), 0) AS score_completude_pct
+
+        FROM VIRTUALISATION."staging-nova-referentieltiers".professional_description
+        t;'
+      query_id: cb05f45f09cb
+    - domain: PTP-TIE-POR
+      dataset: CIHOne.CLIENTS.Professionnels.clients
+      dremio_col: capital
+      virt_col: capital
+      virt_full_path: VIRTUALISATION.staging-nova-referentieltiers.professional_description.capital
+      raw_col: capital
+      rule: Complétude
+      sql: '-- Score Complétude — professional_description.capital
+
+        SELECT
+
+        COUNT(*) AS total_lignes,
+
+        COUNT(t.capital) AS valides,
+
+        COUNT(t.capital) * 100.0 / NULLIF(COUNT(*), 0) AS score_completude_pct
+
+        FROM VIRTUALISATION."staging-nova-referentieltiers".professional_description
+        t;'
+      query_id: 3b07d9d2a1c1
+  professional_activity:
+    checks:
+    - domain: PTP-TIE-POR
+      dataset: CIHOne.CLIENTS.Professionnels.clients
+      dremio_col: code_secteur_activite
+      virt_col: activity_code
+      virt_full_path: VIRTUALISATION.staging-nova-referentieltiers.professional_activity.activity_code
+      raw_col: activity_code
+      rule: Complétude
+      sql: '-- Score Complétude — professional_activity.activity_code
+
+        SELECT
+
+        COUNT(*) AS total_lignes,
+
+        COUNT(CASE WHEN t.activity_code IS NOT NULL
+
+        AND TRIM(t.activity_code) <> '''' THEN 1 END) AS valides,
+
+        COUNT(CASE WHEN t.activity_code IS NOT NULL
+
+        AND TRIM(t.activity_code) <> '''' THEN 1 END) * 100.0
+
+        / NULLIF(COUNT(*), 0) AS score_completude_pct
+
+        FROM VIRTUALISATION."staging-nova-referentieltiers".professional_activity
+        t;'
+      query_id: d5be9c68a83a
+    - domain: PTP-TIE-POR
+      dataset: CIHOne.CLIENTS.Professionnels.clients
+      dremio_col: branche_activite
+      virt_col: activity_branch
+      virt_full_path: VIRTUALISATION.staging-nova-referentieltiers.professional_activity.activity_branch
+      raw_col: activity_branch
+      rule: Complétude
+      sql: '-- Score Complétude — professional_activity.activity_branch
+
+        SELECT
+
+        COUNT(*) AS total_lignes,
+
+        COUNT(CASE WHEN t.activity_branch IS NOT NULL
+
+        AND TRIM(t.activity_branch) <> '''' THEN 1 END) AS valides,
+
+        COUNT(CASE WHEN t.activity_branch IS NOT NULL
+
+        AND TRIM(t.activity_branch) <> '''' THEN 1 END) * 100.0
+
+        / NULLIF(COUNT(*), 0) AS score_completude_pct
+
+        FROM VIRTUALISATION."staging-nova-referentieltiers".professional_activity
+        t;'
+      query_id: 4eda8649aba1
+  natural_person_description:
+    checks:
+    - domain: PTP-TIE-POR
+      dataset: CIHOne.CLIENTS.Personnes_Physiques.clients
+      dremio_col: code_pays_de_residence
+      virt_col: residence_country
+      virt_full_path: VIRTUALISATION.staging-nova-referentieltiers.natural_person_description.residence_country
+      raw_col: residence_country
+      rule: Complétude
+      sql: '-- Score Complétude — natural_person_description.residence_country
+
+        SELECT
+
+        COUNT(*) AS total_lignes,
+
+        COUNT(CASE WHEN t.residence_country IS NOT NULL
+
+        AND TRIM(t.residence_country) <> '''' THEN 1 END) AS valides,
+
+        COUNT(CASE WHEN t.residence_country IS NOT NULL
+
+        AND TRIM(t.residence_country) <> '''' THEN 1 END) * 100.0
+
+        / NULLIF(COUNT(*), 0) AS score_completude_pct
+
+        FROM VIRTUALISATION."staging-nova-referentieltiers".natural_person_description
+        t;'
+      query_id: 86f47e3d8063
+    - domain: PTP-TIE-POR
+      dataset: CIHOne.CLIENTS.Professionnels.clients
+      dremio_col: code_pays_de_residence
+      virt_col: residence_country
+      virt_full_path: VIRTUALISATION.staging-nova-referentieltiers.natural_person_description.residence_country
+      raw_col: residence_country
+      rule: Complétude
+      sql: '-- Score Complétude — natural_person_description.residence_country
+
+        SELECT
+
+        COUNT(*) AS total_lignes,
+
+        COUNT(CASE WHEN t.residence_country IS NOT NULL
+
+        AND TRIM(t.residence_country) <> '''' THEN 1 END) AS valides,
+
+        COUNT(CASE WHEN t.residence_country IS NOT NULL
+
+        AND TRIM(t.residence_country) <> '''' THEN 1 END) * 100.0
+
+        / NULLIF(COUNT(*), 0) AS score_completude_pct
+
+        FROM VIRTUALISATION."staging-nova-referentieltiers".natural_person_description
+        t;'
+      query_id: 86f47e3d8063
+    - domain: PTP-TIE-POR
+      dataset: CIHOne.CLIENTS.Personnes_Physiques.clients
+      dremio_col: nombre_d_enfants
+      virt_col: number_of_child
+      virt_full_path: VIRTUALISATION.staging-nova-referentieltiers.natural_person_description.number_of_child
+      raw_col: number_of_child
+      rule: Complétude
+      sql: '-- Score Complétude — natural_person_description.number_of_child
+
+        SELECT
+
+        COUNT(*) AS total_lignes,
+
+        COUNT(t.number_of_child) AS valides,
+
+        COUNT(t.number_of_child) * 100.0 / NULLIF(COUNT(*), 0) AS score_completude_pct
+
+        FROM VIRTUALISATION."staging-nova-referentieltiers".natural_person_description
+        t;'
+      query_id: 8e8db6661152
+    - domain: PTP-TIE-POR
+      dataset: CIHOne.CLIENTS.Personnes_Physiques.clients
+      dremio_col: code_pays_de_nationalite
+      virt_col: nationality_country
+      virt_full_path: VIRTUALISATION.staging-nova-referentieltiers.natural_person_description.nationality_country
+      raw_col: nationality_country
+      rule: Complétude
+      sql: '-- Score Complétude — natural_person_description.nationality_country
+
+        SELECT
+
+        COUNT(*) AS total_lignes,
+
+        COUNT(CASE WHEN t.nationality_country IS NOT NULL
+
+        AND TRIM(t.nationality_country) <> '''' THEN 1 END) AS valides,
+
+        COUNT(CASE WHEN t.nationality_country IS NOT NULL
+
+        AND TRIM(t.nationality_country) <> '''' THEN 1 END) * 100.0
+
+        / NULLIF(COUNT(*), 0) AS score_completude_pct
+
+        FROM VIRTUALISATION."staging-nova-referentieltiers".natural_person_description
+        t;'
+      query_id: f691094c7cd2
+    - domain: PTP-TIE-POR
+      dataset: CIHOne.CLIENTS.Professionnels.clients
+      dremio_col: code_pays_de_nationalite
+      virt_col: nationality_country
+      virt_full_path: VIRTUALISATION.staging-nova-referentieltiers.natural_person_description.nationality_country
+      raw_col: nationality_country
+      rule: Complétude
+      sql: '-- Score Complétude — natural_person_description.nationality_country
+
+        SELECT
+
+        COUNT(*) AS total_lignes,
+
+        COUNT(CASE WHEN t.nationality_country IS NOT NULL
+
+        AND TRIM(t.nationality_country) <> '''' THEN 1 END) AS valides,
+
+        COUNT(CASE WHEN t.nationality_country IS NOT NULL
+
+        AND TRIM(t.nationality_country) <> '''' THEN 1 END) * 100.0
+
+        / NULLIF(COUNT(*), 0) AS score_completude_pct
+
+        FROM VIRTUALISATION."staging-nova-referentieltiers".natural_person_description
+        t;'
+      query_id: f691094c7cd2
+    - domain: PTP-TIE-POR
+      dataset: CIHOne.CLIENTS.Personnes_Physiques.clients
+      dremio_col: genre
+      virt_col: gender
+      virt_full_path: VIRTUALISATION.staging-nova-referentieltiers.natural_person_description.gender
+      raw_col: gender
+      rule: Complétude
+      sql: "SELECT\n  COUNT(*) AS total_lignes,\n  COUNT(CASE WHEN t.gender IS NOT\
+        \ NULL AND TRIM(t.gender) <> '' THEN 1 END) AS valides,\n  COUNT(CASE WHEN\
+        \ t.gender IS NOT NULL AND TRIM(t.gender) <> '' THEN 1 END) * 100.0 / NULLIF(COUNT(*),\
+        \ 0) AS score_completude_pct\nFROM VIRTUALISATION.\"staging-nova-referentieltiers\"\
+        .natural_person_description t;"
+      query_id: 46ddccb241f9
+    - domain: PTP-TIE-POR
+      dataset: CIHOne.CLIENTS.Personnes_Physiques.clients
+      dremio_col: situation_familiale
+      virt_col: family_situation
+      virt_full_path: VIRTUALISATION.staging-nova-referentieltiers.natural_person_description.family_situation
+      raw_col: family_situation
+      rule: Complétude
+      sql: '-- Score Complétude — natural_person_description.family_situation
+
+        SELECT
+
+        COUNT(*) AS total_lignes,
+
+        COUNT(CASE WHEN t.family_situation IS NOT NULL
+
+        AND TRIM(t.family_situation) <> '''' THEN 1 END) AS valides,
+
+        COUNT(CASE WHEN t.family_situation IS NOT NULL
+
+        AND TRIM(t.family_situation) <> '''' THEN 1 END) * 100.0
+
+        / NULLIF(COUNT(*), 0) AS score_completude_pct
+
+        FROM VIRTUALISATION."staging-nova-referentieltiers".natural_person_description
+        t;'
+      query_id: 639cc2b91e8a
+    - domain: PTP-TIE-POR
+      dataset: CIHOne.CLIENTS.Personnes_Physiques.clients
+      dremio_col: civilite
+      virt_col: civility
+      virt_full_path: VIRTUALISATION.staging-nova-referentieltiers.natural_person_description.civility
+      raw_col: civility
+      rule: Complétude
+      sql: "SELECT\n  COUNT(*) AS total_lignes,\n  COUNT(CASE WHEN t.civility IS NOT\
+        \ NULL AND TRIM(t.civility) <> '' THEN 1 END) AS valides,\n  COUNT(CASE WHEN\
+        \ t.civility IS NOT NULL AND TRIM(t.civility) <> '' THEN 1 END) * 100.0 /\
+        \ NULLIF(COUNT(*), 0) AS score_completude_pct\nFROM VIRTUALISATION.\"staging-nova-referentieltiers\"\
+        .natural_person_description t;"
+      query_id: 69aa97d048f6
+    - domain: PTP-TIE-POR
+      dataset: CIHOne.CLIENTS.Personnes_Morales.gerants
+      dremio_col: nom_gerant
+      virt_col: civility
+      virt_full_path: VIRTUALISATION.staging-nova-referentieltiers.natural_person_description.civility
+      raw_col: civility
+      rule: Complétude
+      sql: '-- Score Complétude — natural_person_description.civility
+
+        SELECT
+
+        COUNT(*) AS total_lignes,
+
+        COUNT(CASE WHEN t.civility IS NOT NULL
+
+        AND TRIM(t.civility) <> '''' THEN 1 END) AS valides,
+
+        COUNT(CASE WHEN t.civility IS NOT NULL
+
+        AND TRIM(t.civility) <> '''' THEN 1 END) * 100.0
+
+        / NULLIF(COUNT(*), 0) AS score_completude_pct
+
+        FROM VIRTUALISATION."staging-nova-referentieltiers".natural_person_description
+        t;'
+      query_id: a671a530e69a
+    - domain: PTP-TIE-POR
+      dataset: CIHOne.CLIENTS.Professionnels.relations_professional_personnes_physiques
+      dremio_col: nom_personnes_physique
+      virt_col: civility
+      virt_full_path: VIRTUALISATION.staging-nova-referentieltiers.natural_person_description.civility
+      raw_col: civility
+      rule: Complétude
+      sql: '-- Score Complétude — natural_person_description.civility
+
+        SELECT
+
+        COUNT(*) AS total_lignes,
+
+        COUNT(CASE WHEN t.civility IS NOT NULL
+
+        AND TRIM(t.civility) <> '''' THEN 1 END) AS valides,
+
+        COUNT(CASE WHEN t.civility IS NOT NULL
+
+        AND TRIM(t.civility) <> '''' THEN 1 END) * 100.0
+
+        / NULLIF(COUNT(*), 0) AS score_completude_pct
+
+        FROM VIRTUALISATION."staging-nova-referentieltiers".natural_person_description
+        t;'
+      query_id: a671a530e69a
+    - domain: PTP-TIE-POR
+      dataset: CIHOne.CLIENTS.Personnes_Physiques.clients
+      dremio_col: date_de_naissance
+      virt_col: birthdate
+      virt_full_path: VIRTUALISATION.staging-nova-referentieltiers.natural_person_description.birthdate
+      raw_col: birthdate
+      rule: Complétude
+      sql: "SELECT\n  COUNT(*) AS total_lignes,\n  COUNT(CASE WHEN t.birthdate IS\
+        \ NOT NULL AND TRIM(CAST(t.birthdate AS VARCHAR)) <> '' THEN 1 END) AS valides,\n\
+        \  COUNT(CASE WHEN t.birthdate IS NOT NULL AND TRIM(CAST(t.birthdate AS VARCHAR))\
+        \ <> '' THEN 1 END) * 100.0 / NULLIF(COUNT(*), 0) AS score_completude_pct\n\
+        FROM VIRTUALISATION.\"staging-nova-referentieltiers\".natural_person_description\
+        \ t;"
+      query_id: 0e89f96df60f
+    - domain: PTP-TIE-POR
+      dataset: CIHOne.CLIENTS.Personnes_Physiques.clients
+      dremio_col: pays_de_naissance
+      virt_col: birth_country
+      virt_full_path: VIRTUALISATION.staging-nova-referentieltiers.natural_person_description.birth_country
+      raw_col: birth_country
+      rule: Complétude
+      sql: "SELECT\n  COUNT(*) AS total_lignes,\n  COUNT(CASE WHEN t.birth_country\
+        \ IS NOT NULL AND TRIM(t.birth_country) <> '' THEN 1 END) AS valides,\n  COUNT(CASE\
+        \ WHEN t.birth_country IS NOT NULL AND TRIM(t.birth_country) <> '' THEN 1\
+        \ END) * 100.0 / NULLIF(COUNT(*), 0) AS score_completude_pct\nFROM VIRTUALISATION.\"\
+        staging-nova-referentieltiers\".natural_person_description t;"
+      query_id: 87b0c346a9e8
+    - domain: PTP-TIE-POR
+      dataset: CIHOne.CLIENTS.Personnes_Physiques.clients
+      dremio_col: ville_de_naissance
+      virt_col: birth_city
+      virt_full_path: VIRTUALISATION.staging-nova-referentieltiers.natural_person_description.birth_city
+      raw_col: birth_city
+      rule: Complétude
+      sql: "SELECT\n  COUNT(*) AS total_lignes,\n  COUNT(CASE WHEN t.birth_city IS\
+        \ NOT NULL AND TRIM(t.birth_city) <> '' THEN 1 END) AS valides,\n  COUNT(CASE\
+        \ WHEN t.birth_city IS NOT NULL AND TRIM(t.birth_city) <> '' THEN 1 END) *\
+        \ 100.0 / NULLIF(COUNT(*), 0) AS score_completude_pct\nFROM VIRTUALISATION.\"\
+        staging-nova-referentieltiers\".natural_person_description t;"
+      query_id: 9ffbbf6e552b
+  legal_entity_financial_data:
+    checks:
+    - domain: PTP-TIE-POR
+      dataset: CIHOne.CLIENTS.Personnes_Morales.clients
+      dremio_col: chiffre_affaire
+      virt_col: turnover
+      virt_full_path: VIRTUALISATION.staging-nova-referentieltiers.legal_entity_financial_data.turnover
+      raw_col: turnover
+      rule: Complétude
+      sql: "SELECT\n  COUNT(*) AS total_lignes,\n  COUNT(t.turnover) AS valides,\n\
+        \  COUNT(t.turnover) * 100.0 / NULLIF(COUNT(*), 0) AS score_completude_pct\n\
+        FROM VIRTUALISATION.\"staging-nova-referentieltiers\".legal_entity_financial_data\
+        \ t;"
+      query_id: d5dcdbb365e9
+    - domain: PTP-TIE-POR
+      dataset: CIHOne.CLIENTS.Personnes_Morales.clients
+      dremio_col: capital
+      virt_col: capital
+      virt_full_path: VIRTUALISATION.staging-nova-referentieltiers.legal_entity_financial_data.capital
+      raw_col: capital
+      rule: Complétude
+      sql: "SELECT\n  COUNT(*) AS total_lignes,\n  COUNT(t.capital) AS valides,\n\
+        \  COUNT(t.capital) * 100.0 / NULLIF(COUNT(*), 0) AS score_completude_pct\n\
+        FROM VIRTUALISATION.\"staging-nova-referentieltiers\".legal_entity_financial_data\
+        \ t;"
+      query_id: d988ca7f64f8
+  legal_entity_description:
+    checks:
+    - domain: PTP-TIE-POR
+      dataset: CIHOne.CLIENTS.Personnes_Morales.associes
+      dremio_col: codepaysdenationalite
+      virt_col: nationality_country
+      virt_full_path: VIRTUALISATION.staging-nova-referentieltiers.legal_entity_description.nationality_country
+      raw_col: nationality_country
+      rule: Complétude
+      sql: "SELECT\n  COUNT(*) AS total_lignes,\n  COUNT(CASE WHEN t.nationality_country\
+        \ IS NOT NULL AND TRIM(t.nationality_country) <> '' THEN 1 END) AS valides,\n\
+        \  COUNT(CASE WHEN t.nationality_country IS NOT NULL AND TRIM(t.nationality_country)\
+        \ <> '' THEN 1 END) * 100.0 / NULLIF(COUNT(*), 0) AS score_completude_pct\n\
+        FROM VIRTUALISATION.\"staging-nova-referentieltiers\".legal_entity_description\
+        \ t;"
+      query_id: 9430c99bcc3f
+    - domain: PTP-TIE-POR
+      dataset: CIHOne.CLIENTS.Personnes_Morales.clients
+      dremio_col: code_pays_de_nationalite
+      virt_col: nationality_country
+      virt_full_path: VIRTUALISATION.staging-nova-referentieltiers.legal_entity_description.nationality_country
+      raw_col: nationality_country
+      rule: Complétude
+      sql: "SELECT\n  COUNT(*) AS total_lignes,\n  COUNT(CASE WHEN t.nationality_country\
+        \ IS NOT NULL AND TRIM(t.nationality_country) <> '' THEN 1 END) AS valides,\n\
+        \  COUNT(CASE WHEN t.nationality_country IS NOT NULL AND TRIM(t.nationality_country)\
+        \ <> '' THEN 1 END) * 100.0 / NULLIF(COUNT(*), 0) AS score_completude_pct\n\
+        FROM VIRTUALISATION.\"staging-nova-referentieltiers\".legal_entity_description\
+        \ t;"
+      query_id: 9430c99bcc3f
+    - domain: PTP-TIE-POR
+      dataset: CIHOne.CLIENTS.Personnes_Morales.associes
+      dremio_col: codepaysdedomiciliation
+      virt_col: domicile_country
+      virt_full_path: VIRTUALISATION.staging-nova-referentieltiers.legal_entity_description.domicile_country
+      raw_col: domicile_country
+      rule: Complétude
+      sql: "SELECT\n  COUNT(*) AS total_lignes,\n  COUNT(CASE WHEN t.domicile_country\
+        \ IS NOT NULL AND TRIM(t.domicile_country) <> '' THEN 1 END) AS valides,\n\
+        \  COUNT(CASE WHEN t.domicile_country IS NOT NULL AND TRIM(t.domicile_country)\
+        \ <> '' THEN 1 END) * 100.0 / NULLIF(COUNT(*), 0) AS score_completude_pct\n\
+        FROM VIRTUALISATION.\"staging-nova-referentieltiers\".legal_entity_description\
+        \ t;"
+      query_id: 163935f9fe5c
+    - domain: PTP-TIE-POR
+      dataset: CIHOne.CLIENTS.Personnes_Morales.clients
+      dremio_col: code_pays_de_domiciliation
+      virt_col: domicile_country
+      virt_full_path: VIRTUALISATION.staging-nova-referentieltiers.legal_entity_description.domicile_country
+      raw_col: domicile_country
+      rule: Complétude
+      sql: "SELECT\n  COUNT(*) AS total_lignes,\n  COUNT(CASE WHEN t.domicile_country\
+        \ IS NOT NULL AND TRIM(t.domicile_country) <> '' THEN 1 END) AS valides,\n\
+        \  COUNT(CASE WHEN t.domicile_country IS NOT NULL AND TRIM(t.domicile_country)\
+        \ <> '' THEN 1 END) * 100.0 / NULLIF(COUNT(*), 0) AS score_completude_pct\n\
+        FROM VIRTUALISATION.\"staging-nova-referentieltiers\".legal_entity_description\
+        \ t;"
+      query_id: 163935f9fe5c
+    - domain: PTP-TIE-POR
+      dataset: CIHOne.CLIENTS.Personnes_Morales.gerants
+      dremio_col: datecreationjuridique
+      virt_col: creation_date
+      virt_full_path: VIRTUALISATION.staging-nova-referentieltiers.legal_entity_description.creation_date
+      raw_col: creation_date
+      rule: Complétude
+      sql: '-- Score Complétude — legal_entity_description.creation_date
+
+        SELECT
+
+        COUNT(*) AS total_lignes,
+
+        COUNT(t.creation_date) AS valides,
+
+        COUNT(t.creation_date) * 100.0 / NULLIF(COUNT(*), 0) AS score_completude_pct
+
+        FROM VIRTUALISATION."staging-nova-referentieltiers".legal_entity_description
+        t;'
+      query_id: aa6b7cbe5f83
+    - domain: PTP-TIE-POR
+      dataset: CIHOne.CLIENTS.Personnes_Morales.gerants
+      dremio_col: raisonsocial
+      virt_col: corporate_name
+      virt_full_path: VIRTUALISATION.staging-nova-referentieltiers.legal_entity_description.corporate_name
+      raw_col: corporate_name
+      rule: Complétude
+      sql: '-- Score Complétude — legal_entity_description.corporate_name
+
+        SELECT
+
+        COUNT(*) AS total_lignes,
+
+        COUNT(CASE WHEN t.corporate_name IS NOT NULL
+
+        AND TRIM(t.corporate_name) <> '''' THEN 1 END) AS valides,
+
+        COUNT(CASE WHEN t.corporate_name IS NOT NULL
+
+        AND TRIM(t.corporate_name) <> '''' THEN 1 END) * 100.0
+
+        / NULLIF(COUNT(*), 0) AS score_completude_pct
+
+        FROM VIRTUALISATION."staging-nova-referentieltiers".legal_entity_description
+        t;'
+      query_id: 0f4ee460b27c
+  customers:
+    checks:
+    - domain: PTP-TIE-POR
+      dataset: CIHOne.CLIENTS.Personnes_Physiques.clients
+      dremio_col: type_client
+      virt_col: customer_type
+      virt_full_path: VIRTUALISATION.staging-nova-referentieltiers.customers.customer_type
+      raw_col: customer_type
+      rule: Complétude
+      sql: '-- Score Complétude — customers.customer_type
+
+        SELECT
+
+        COUNT(*) AS total_lignes,
+
+        COUNT(CASE WHEN t.customer_type IS NOT NULL
+
+        AND TRIM(t.customer_type) <> '''' THEN 1 END) AS valides,
+
+        COUNT(CASE WHEN t.customer_type IS NOT NULL
+
+        AND TRIM(t.customer_type) <> '''' THEN 1 END) * 100.0
+
+        / NULLIF(COUNT(*), 0) AS score_completude_pct
+
+        FROM VIRTUALISATION."staging-nova-referentieltiers".customers t;'
+      query_id: 7f20313fe62f
+    - domain: PTP-TIE-POR
+      dataset: CIHOne.CLIENTS.Professionnels.clients
+      dremio_col: type_client
+      virt_col: customer_type
+      virt_full_path: VIRTUALISATION.staging-nova-referentieltiers.customers.customer_type
+      raw_col: customer_type
+      rule: Complétude
+      sql: '-- Score Complétude — customers.customer_type
+
+        SELECT
+
+        COUNT(*) AS total_lignes,
+
+        COUNT(CASE WHEN t.customer_type IS NOT NULL
+
+        AND TRIM(t.customer_type) <> '''' THEN 1 END) AS valides,
+
+        COUNT(CASE WHEN t.customer_type IS NOT NULL
+
+        AND TRIM(t.customer_type) <> '''' THEN 1 END) * 100.0
+
+        / NULLIF(COUNT(*), 0) AS score_completude_pct
+
+        FROM VIRTUALISATION."staging-nova-referentieltiers".customers t;'
+      query_id: 7f20313fe62f
+    - domain: PTP-TIE-POR
+      dataset: CIHOne.CLIENTS.Professionnels.relations_professional_personnes_physiques
+      dremio_col: radical_professional
+      virt_col: customer_number
+      virt_full_path: VIRTUALISATION.staging-nova-referentieltiers.customers.customer_number
+      raw_col: customer_number
+      rule: Complétude
+      sql: '-- Score Complétude — customers.customer_number (rôle radical_professional)
+
+        SELECT
+
+        COUNT(*) AS total_lignes,
+
+        COUNT(CASE WHEN t.customer_number IS NOT NULL
+
+        AND TRIM(t.customer_number) <> '''' THEN 1 END) AS valides,
+
+        COUNT(CASE WHEN t.customer_number IS NOT NULL
+
+        AND TRIM(t.customer_number) <> '''' THEN 1 END) * 100.0
+
+        / NULLIF(COUNT(*), 0) AS score_completude_pct
+
+        FROM VIRTUALISATION."staging-nova-referentieltiers".customers t
+
+        INNER JOIN VIRTUALISATION."staging-nova-referentieltiers".professional p
+
+        ON t.identifier = p.identifier;'
+      query_id: 6b0e7702df64
+    - domain: PTP-TIE-POR
+      dataset: CIHOne.CLIENTS.Professionnels.relations_professional_personnes_physiques
+      dremio_col: radical_personnes_physique
+      virt_col: customer_number
+      virt_full_path: VIRTUALISATION.staging-nova-referentieltiers.customers.customer_number
+      raw_col: customer_number
+      rule: Complétude
+      sql: '-- Score Complétude — customers.customer_number (rôle radical_personnes_physique)
+
+        SELECT
+
+        COUNT(*) AS total_lignes,
+
+        COUNT(CASE WHEN t.customer_number IS NOT NULL
+
+        AND TRIM(t.customer_number) <> '''' THEN 1 END) AS valides,
+
+        COUNT(CASE WHEN t.customer_number IS NOT NULL
+
+        AND TRIM(t.customer_number) <> '''' THEN 1 END) * 100.0
+
+        / NULLIF(COUNT(*), 0) AS score_completude_pct
+
+        FROM VIRTUALISATION."staging-nova-referentieltiers".customers t
+
+        INNER JOIN VIRTUALISATION."staging-nova-referentieltiers".natural_person np
+
+        ON t.identifier = np.identifier;'
+      query_id: ac4bbd288480
+  customer_job:
+    checks:
+    - domain: PTP-TIE-POR
+      dataset: CIHOne.CLIENTS.Personnes_Physiques.clients
+      dremio_col: code_categorie_socio_professionelle
+      virt_col: socioprofessional_category
+      virt_full_path: VIRTUALISATION.staging-nova-referentieltiers.customer_job.socioprofessional_category
+      raw_col: socioprofessional_category
+      rule: Complétude
+      sql: '-- Score Complétude — customer_job.socioprofessional_category
+
+        SELECT
+
+        COUNT(*) AS total_lignes,
+
+        COUNT(CASE WHEN t.socioprofessional_category IS NOT NULL
+
+        AND TRIM(t.socioprofessional_category) <> '''' THEN 1 END) AS valides,
+
+        COUNT(CASE WHEN t.socioprofessional_category IS NOT NULL
+
+        AND TRIM(t.socioprofessional_category) <> '''' THEN 1 END) * 100.0
+
+        / NULLIF(COUNT(*), 0) AS score_completude_pct
+
+        FROM VIRTUALISATION."staging-nova-referentieltiers".customer_job t;'
+      query_id: 11aa97bac464
+    - domain: PTP-TIE-POR
+      dataset: CIHOne.CLIENTS.Personnes_Physiques.clients
+      dremio_col: situation_professionelle
+      virt_col: professional_situation
+      virt_full_path: VIRTUALISATION.staging-nova-referentieltiers.customer_job.professional_situation
+      raw_col: professional_situation
+      rule: Complétude
+      sql: '-- Score Complétude — customer_job.professional_situation
+
+        SELECT
+
+        COUNT(*) AS total_lignes,
+
+        COUNT(CASE WHEN t.professional_situation IS NOT NULL
+
+        AND TRIM(t.professional_situation) <> '''' THEN 1 END) AS valides,
+
+        COUNT(CASE WHEN t.professional_situation IS NOT NULL
+
+        AND TRIM(t.professional_situation) <> '''' THEN 1 END) * 100.0
+
+        / NULLIF(COUNT(*), 0) AS score_completude_pct
+
+        FROM VIRTUALISATION."staging-nova-referentieltiers".customer_job t;'
+      query_id: c4451d7eb19b
+    - domain: PTP-TIE-POR
+      dataset: CIHOne.CLIENTS.Personnes_Physiques.clients
+      dremio_col: code_secteur_professionel
+      virt_col: professional_sector
+      virt_full_path: VIRTUALISATION.staging-nova-referentieltiers.customer_job.professional_sector
+      raw_col: professional_sector
+      rule: Complétude
+      sql: '-- Score Complétude — customer_job.professional_sector
+
+        SELECT
+
+        COUNT(*) AS total_lignes,
+
+        COUNT(CASE WHEN t.professional_sector IS NOT NULL
+
+        AND TRIM(t.professional_sector) <> '''' THEN 1 END) AS valides,
+
+        COUNT(CASE WHEN t.professional_sector IS NOT NULL
+
+        AND TRIM(t.professional_sector) <> '''' THEN 1 END) * 100.0
+
+        / NULLIF(COUNT(*), 0) AS score_completude_pct
+
+        FROM VIRTUALISATION."staging-nova-referentieltiers".customer_job t;'
+      query_id: 8f9cfffd9079
+    - domain: PTP-TIE-POR
+      dataset: CIHOne.CLIENTS.Personnes_Physiques.clients
+      dremio_col: code_profession
+      virt_col: occupation
+      virt_full_path: VIRTUALISATION.staging-nova-referentieltiers.customer_job.occupation
+      raw_col: occupation
+      rule: Complétude
+      sql: '-- Score Complétude — customer_job.occupation
+
+        SELECT
+
+        COUNT(*) AS total_lignes,
+
+        COUNT(CASE WHEN t.occupation IS NOT NULL
+
+        AND TRIM(t.occupation) <> '''' THEN 1 END) AS valides,
+
+        COUNT(CASE WHEN t.occupation IS NOT NULL
+
+        AND TRIM(t.occupation) <> '''' THEN 1 END) * 100.0
+
+        / NULLIF(COUNT(*), 0) AS score_completude_pct
+
+        FROM VIRTUALISATION."staging-nova-referentieltiers".customer_job t;'
+      query_id: dd31e1d2068e
+    - domain: PTP-TIE-POR
+      dataset: CIHOne.CLIENTS.Personnes_Physiques.clients
+      dremio_col: employeur
+      virt_col: employer
+      virt_full_path: VIRTUALISATION.staging-nova-referentieltiers.customer_job.employer
+      raw_col: employer
+      rule: Complétude
+      sql: '-- Score Complétude — customer_job.employer
+
+        SELECT
+
+        COUNT(*) AS total_lignes,
+
+        COUNT(CASE WHEN t.employer IS NOT NULL
+
+        AND TRIM(t.employer) <> '''' THEN 1 END) AS valides,
+
+        COUNT(CASE WHEN t.employer IS NOT NULL
+
+        AND TRIM(t.employer) <> '''' THEN 1 END) * 100.0
+
+        / NULLIF(COUNT(*), 0) AS score_completude_pct
+
+        FROM VIRTUALISATION."staging-nova-referentieltiers".customer_job t;'
+      query_id: b9336db01b86
+  customer_activity:
+    checks:
+    - domain: PTP-TIE-POR
+      dataset: CIHOne.CLIENTS.Personnes_Morales.clients
+      dremio_col: type_secteur_activite
+      virt_col: main
+      virt_full_path: VIRTUALISATION.staging-nova-referentieltiers.customer_activity.main
+      raw_col: main
+      rule: Complétude
+      sql: "SELECT\n  COUNT(*) AS total_lignes,\n  COUNT(CASE WHEN t.main IS NOT NULL\
+        \ AND TRIM(t.main) <> '' THEN 1 END) AS valides,\n  COUNT(CASE WHEN t.main\
+        \ IS NOT NULL AND TRIM(t.main) <> '' THEN 1 END) * 100.0 / NULLIF(COUNT(*),\
+        \ 0) AS score_completude_pct\nFROM VIRTUALISATION.\"staging-nova-referentieltiers\"\
+        .customer_activity t;"
+      query_id: 2358b1395eb4
+    - domain: PTP-TIE-POR
+      dataset: CIHOne.CLIENTS.Personnes_Morales.clients
+      dremio_col: branche_activite
+      virt_col: branch
+      virt_full_path: VIRTUALISATION.staging-nova-referentieltiers.customer_activity.branch
+      raw_col: branch
+      rule: Complétude
+      sql: "SELECT\n  COUNT(*) AS total_lignes,\n  COUNT(CASE WHEN t.branch IS NOT\
+        \ NULL AND TRIM(t.branch) <> '' THEN 1 END) AS valides,\n  COUNT(CASE WHEN\
+        \ t.branch IS NOT NULL AND TRIM(t.branch) <> '' THEN 1 END) * 100.0 / NULLIF(COUNT(*),\
+        \ 0) AS score_completude_pct\nFROM VIRTUALISATION.\"staging-nova-referentieltiers\"\
+        .customer_activity t;"
+      query_id: 87a146e59e84
+    - domain: PTP-TIE-POR
+      dataset: CIHOne.CLIENTS.Personnes_Morales.clients
+      dremio_col: identifiant_fatca
+      virt_col: ape_code
+      virt_full_path: VIRTUALISATION.staging-nova-referentieltiers.customer_activity.ape_code
+      raw_col: ape_code
+      rule: Complétude
+      sql: "SELECT\n  COUNT(*) AS total_lignes,\n  COUNT(CASE WHEN t.ape_code IS NOT\
+        \ NULL AND TRIM(t.ape_code) <> '' THEN 1 END) AS valides,\n  COUNT(CASE WHEN\
+        \ t.ape_code IS NOT NULL AND TRIM(t.ape_code) <> '' THEN 1 END) * 100.0 /\
+        \ NULLIF(COUNT(*), 0) AS score_completude_pct\nFROM VIRTUALISATION.\"staging-nova-referentieltiers\"\
+        .customer_activity t;"
+      query_id: 1ab2130a6e75
+  company_shareholders:
+    checks:
+    - domain: PTP-TIE-POR
+      dataset: CIHOne.CLIENTS.Personnes_Morales.associes
+      dremio_col: genre
+      virt_col: gendre
+      virt_full_path: VIRTUALISATION.staging-nova-referentieltiers.company_shareholders.gendre
+      raw_col: gendre
+      rule: Complétude
+      sql: "SELECT\n  COUNT(*) AS total_lignes,\n  COUNT(CASE WHEN t.gendre IS NOT\
+        \ NULL AND TRIM(t.gendre) <> '' THEN 1 END) AS valides,\n  COUNT(CASE WHEN\
+        \ t.gendre IS NOT NULL AND TRIM(t.gendre) <> '' THEN 1 END) * 100.0 / NULLIF(COUNT(*),\
+        \ 0) AS score_completude_pct\nFROM VIRTUALISATION.\"staging-nova-referentieltiers\"\
+        .company_shareholders t;"
+      query_id: d0c95a45527c
+    - domain: PTP-TIE-POR
+      dataset: CIHOne.CLIENTS.Personnes_Morales.associes
+      dremio_col: date_naissance
+      virt_col: birthdate
+      virt_full_path: VIRTUALISATION.staging-nova-referentieltiers.company_shareholders.birthdate
+      raw_col: birthdate
+      rule: Complétude
+      sql: "SELECT\n  COUNT(*) AS total_lignes,\n  COUNT(CASE WHEN t.birthdate IS\
+        \ NOT NULL AND TRIM(CAST(t.birthdate AS VARCHAR)) <> '' THEN 1 END) AS valides,\n\
+        \  COUNT(CASE WHEN t.birthdate IS NOT NULL AND TRIM(CAST(t.birthdate AS VARCHAR))\
+        \ <> '' THEN 1 END) * 100.0 / NULLIF(COUNT(*), 0) AS score_completude_pct\n\
+        FROM VIRTUALISATION.\"staging-nova-referentieltiers\".company_shareholders\
+        \ t;"
+      query_id: 5df17b8df8be
+  customer_mail:
+    checks:
+    - domain: PTP-TIE-POR
+      dataset: CIHOne.CLIENTS.Personnes_Morales.adresses
+      dremio_col: adresse
+      virt_col: complete_adress
+      virt_full_path: VIRTUALISATION.staging-nova-referentieltiers.customer_mail.complete_adress
+      raw_col: complete_adress
+      rule: Complétude
+      sql: "SELECT\n  COUNT(*) AS total_lignes,\n  COUNT(CASE WHEN t.complete_adress\
+        \ IS NOT NULL AND TRIM(t.complete_adress) <> '' THEN 1 END) AS valides,\n\
+        \  COUNT(CASE WHEN t.complete_adress IS NOT NULL AND TRIM(t.complete_adress)\
+        \ <> '' THEN 1 END) * 100.0\n    / NULLIF(COUNT(*), 0) AS score_completude_pct\n\
+        FROM VIRTUALISATION.\"staging-nova-referentieltiers\".customer_mail t;"
+      query_id: 9dcb29f94032
+    - domain: PTP-TIE-POR
+      dataset: CIHOne.CLIENTS.Personnes_Morales.adresses
+      dremio_col: code_postal
+      virt_col: zip_code
+      virt_full_path: VIRTUALISATION.staging-nova-referentieltiers.customer_mail.zip_code
+      raw_col: zip_code
+      rule: Complétude
+      sql: "SELECT\n  COUNT(*) AS total_lignes,\n  COUNT(CASE WHEN t.zip_code IS NOT\
+        \ NULL AND TRIM(t.zip_code) <> '' THEN 1 END) AS valides,\n  COUNT(CASE WHEN\
+        \ t.zip_code IS NOT NULL AND TRIM(t.zip_code) <> '' THEN 1 END) * 100.0\n\
+        \    / NULLIF(COUNT(*), 0) AS score_completude_pct\nFROM VIRTUALISATION.\"\
+        staging-nova-referentieltiers\".customer_mail t;"
+      query_id: f53a396abb15
+    - domain: PTP-TIE-POR
+      dataset: CIHOne.CLIENTS.Personnes_Morales.adresses
+      dremio_col: code_ville
+      virt_col: city
+      virt_full_path: VIRTUALISATION.staging-nova-referentieltiers.customer_mail.city
+      raw_col: city
+      rule: Complétude
+      sql: "SELECT\n  COUNT(*) AS total_lignes,\n  COUNT(CASE WHEN t.city IS NOT NULL\
+        \ AND TRIM(t.city) <> '' THEN 1 END) AS valides,\n  COUNT(CASE WHEN t.city\
+        \ IS NOT NULL AND TRIM(t.city) <> '' THEN 1 END) * 100.0\n    / NULLIF(COUNT(*),\
+        \ 0) AS score_completude_pct\nFROM VIRTUALISATION.\"staging-nova-referentieltiers\"\
+        .customer_mail t;"
+      query_id: 3afbd771c0fa
+    - domain: PTP-TIE-POR
+      dataset: CIHOne.CLIENTS.Personnes_Morales.adresses
+      dremio_col: code_pays
+      virt_col: country_code
+      virt_full_path: VIRTUALISATION.staging-nova-referentieltiers.customer_mail.country_code
+      raw_col: country_code
+      rule: Complétude
+      sql: "SELECT\n  COUNT(*) AS total_lignes,\n  COUNT(CASE WHEN t.country_code\
+        \ IS NOT NULL AND TRIM(t.country_code) <> '' THEN 1 END) AS valides,\n  COUNT(CASE\
+        \ WHEN t.country_code IS NOT NULL AND TRIM(t.country_code) <> '' THEN 1 END)\
+        \ * 100.0\n    / NULLIF(COUNT(*), 0) AS score_completude_pct\nFROM VIRTUALISATION.\"\
+        staging-nova-referentieltiers\".customer_mail t;"
+      query_id: 089a8c56d285
+  customer_creation_context:
+    checks:
+    - domain: PTP-TIE-POR
+      dataset: CIHOne.CLIENTS.Personnes_Morales.clients
+      dremio_col: lieu_creation
+      virt_col: user_identifier
+      virt_full_path: VIRTUALISATION.staging-nova-referentieltiers.customer_creation_context.user_identifier
+      raw_col: user_identifier
+      rule: Complétude
+      sql: "SELECT\n  COUNT(*) AS total_lignes,\n  COUNT(CASE WHEN t.user_identifier\
+        \ IS NOT NULL AND TRIM(t.user_identifier) <> '' THEN 1 END) AS valides,\n\
+        \  COUNT(CASE WHEN t.user_identifier IS NOT NULL AND TRIM(t.user_identifier)\
+        \ <> '' THEN 1 END) * 100.0\n    / NULLIF(COUNT(*), 0) AS score_completude_pct\n\
+        FROM VIRTUALISATION.\"staging-nova-referentieltiers\".customer_creation_context\
+        \ t;"
+      query_id: ca0d53261a8d
+    - domain: PTP-TIE-POR
+      dataset: CIHOne.CLIENTS.Personnes_Physiques.clients
+      dremio_col: lieu_creation
+      virt_col: user_identifier
+      virt_full_path: VIRTUALISATION.staging-nova-referentieltiers.customer_creation_context.user_identifier
+      raw_col: user_identifier
+      rule: Complétude
+      sql: "SELECT\n  COUNT(*) AS total_lignes,\n  COUNT(CASE WHEN t.user_identifier\
+        \ IS NOT NULL AND TRIM(t.user_identifier) <> '' THEN 1 END) AS valides,\n\
+        \  COUNT(CASE WHEN t.user_identifier IS NOT NULL AND TRIM(t.user_identifier)\
+        \ <> '' THEN 1 END) * 100.0\n    / NULLIF(COUNT(*), 0) AS score_completude_pct\n\
+        FROM VIRTUALISATION.\"staging-nova-referentieltiers\".customer_creation_context\
+        \ t;"
+      query_id: ca0d53261a8d
+  customer_segmentation:
+    checks:
+    - domain: PTP-TIE-POR
+      dataset: CIHOne.CLIENTS.Personnes_Physiques.clients
+      dremio_col: code_segment
+      virt_col: segment_number
+      virt_full_path: VIRTUALISATION.staging-nova-referentieltiers.customer_segmentation.segment_number
+      raw_col: segment_number
+      rule: Complétude
+      sql: "SELECT\n  COUNT(*) AS total_lignes,\n  COUNT(CASE WHEN t.segment_number\
+        \ IS NOT NULL AND TRIM(t.segment_number) <> '' THEN 1 END) AS valides,\n \
+        \ COUNT(CASE WHEN t.segment_number IS NOT NULL AND TRIM(t.segment_number)\
+        \ <> '' THEN 1 END) * 100.0\n    / NULLIF(COUNT(*), 0) AS score_completude_pct\n\
+        FROM VIRTUALISATION.\"staging-nova-referentieltiers\".customer_segmentation\
+        \ t;"
+      query_id: 6180a33a7d32
+unique_queries:
+  8b3b964e7c61:
+    sql: '-- Score Complétude — professional_description.turnover
+
+      SELECT
+
+      COUNT(*) AS total_lignes,
+
+      COUNT(t.turnover) AS valides,
+
+      COUNT(t.turnover) * 100.0 / NULLIF(COUNT(*), 0) AS score_completude_pct
+
+      FROM VIRTUALISATION."staging-nova-referentieltiers".professional_description
+      t;'
+    used_by:
+    - professional_description.turnover
+  cb05f45f09cb:
+    sql: '-- Score Complétude — professional_description.company_name
+
+      SELECT
+
+      COUNT(*) AS total_lignes,
+
+      COUNT(CASE WHEN t.company_name IS NOT NULL
+
+      AND TRIM(t.company_name) <> '''' THEN 1 END) AS valides,
+
+      COUNT(CASE WHEN t.company_name IS NOT NULL
+
+      AND TRIM(t.company_name) <> '''' THEN 1 END) * 100.0
+
+      / NULLIF(COUNT(*), 0) AS score_completude_pct
+
+      FROM VIRTUALISATION."staging-nova-referentieltiers".professional_description
+      t;'
+    used_by:
+    - professional_description.company_name
+    - professional_description.company_name
+  3b07d9d2a1c1:
+    sql: '-- Score Complétude — professional_description.capital
+
+      SELECT
+
+      COUNT(*) AS total_lignes,
+
+      COUNT(t.capital) AS valides,
+
+      COUNT(t.capital) * 100.0 / NULLIF(COUNT(*), 0) AS score_completude_pct
+
+      FROM VIRTUALISATION."staging-nova-referentieltiers".professional_description
+      t;'
+    used_by:
+    - professional_description.capital
+  d5be9c68a83a:
+    sql: '-- Score Complétude — professional_activity.activity_code
+
+      SELECT
+
+      COUNT(*) AS total_lignes,
+
+      COUNT(CASE WHEN t.activity_code IS NOT NULL
+
+      AND TRIM(t.activity_code) <> '''' THEN 1 END) AS valides,
+
+      COUNT(CASE WHEN t.activity_code IS NOT NULL
+
+      AND TRIM(t.activity_code) <> '''' THEN 1 END) * 100.0
+
+      / NULLIF(COUNT(*), 0) AS score_completude_pct
+
+      FROM VIRTUALISATION."staging-nova-referentieltiers".professional_activity t;'
+    used_by:
+    - professional_activity.activity_code
+  4eda8649aba1:
+    sql: '-- Score Complétude — professional_activity.activity_branch
+
+      SELECT
+
+      COUNT(*) AS total_lignes,
+
+      COUNT(CASE WHEN t.activity_branch IS NOT NULL
+
+      AND TRIM(t.activity_branch) <> '''' THEN 1 END) AS valides,
+
+      COUNT(CASE WHEN t.activity_branch IS NOT NULL
+
+      AND TRIM(t.activity_branch) <> '''' THEN 1 END) * 100.0
+
+      / NULLIF(COUNT(*), 0) AS score_completude_pct
+
+      FROM VIRTUALISATION."staging-nova-referentieltiers".professional_activity t;'
+    used_by:
+    - professional_activity.activity_branch
+  86f47e3d8063:
+    sql: '-- Score Complétude — natural_person_description.residence_country
+
+      SELECT
+
+      COUNT(*) AS total_lignes,
+
+      COUNT(CASE WHEN t.residence_country IS NOT NULL
+
+      AND TRIM(t.residence_country) <> '''' THEN 1 END) AS valides,
+
+      COUNT(CASE WHEN t.residence_country IS NOT NULL
+
+      AND TRIM(t.residence_country) <> '''' THEN 1 END) * 100.0
+
+      / NULLIF(COUNT(*), 0) AS score_completude_pct
+
+      FROM VIRTUALISATION."staging-nova-referentieltiers".natural_person_description
+      t;'
+    used_by:
+    - natural_person_description.residence_country
+    - natural_person_description.residence_country
+  8e8db6661152:
+    sql: '-- Score Complétude — natural_person_description.number_of_child
+
+      SELECT
+
+      COUNT(*) AS total_lignes,
+
+      COUNT(t.number_of_child) AS valides,
+
+      COUNT(t.number_of_child) * 100.0 / NULLIF(COUNT(*), 0) AS score_completude_pct
+
+      FROM VIRTUALISATION."staging-nova-referentieltiers".natural_person_description
+      t;'
+    used_by:
+    - natural_person_description.number_of_child
+  f691094c7cd2:
+    sql: '-- Score Complétude — natural_person_description.nationality_country
+
+      SELECT
+
+      COUNT(*) AS total_lignes,
+
+      COUNT(CASE WHEN t.nationality_country IS NOT NULL
+
+      AND TRIM(t.nationality_country) <> '''' THEN 1 END) AS valides,
+
+      COUNT(CASE WHEN t.nationality_country IS NOT NULL
+
+      AND TRIM(t.nationality_country) <> '''' THEN 1 END) * 100.0
+
+      / NULLIF(COUNT(*), 0) AS score_completude_pct
+
+      FROM VIRTUALISATION."staging-nova-referentieltiers".natural_person_description
+      t;'
+    used_by:
+    - natural_person_description.nationality_country
+    - natural_person_description.nationality_country
+  46ddccb241f9:
+    sql: "SELECT\n  COUNT(*) AS total_lignes,\n  COUNT(CASE WHEN t.gender IS NOT NULL\
+      \ AND TRIM(t.gender) <> '' THEN 1 END) AS valides,\n  COUNT(CASE WHEN t.gender\
+      \ IS NOT NULL AND TRIM(t.gender) <> '' THEN 1 END) * 100.0 / NULLIF(COUNT(*),\
+      \ 0) AS score_completude_pct\nFROM VIRTUALISATION.\"staging-nova-referentieltiers\"\
+      .natural_person_description t;"
+    used_by:
+    - natural_person_description.gender
+  639cc2b91e8a:
+    sql: '-- Score Complétude — natural_person_description.family_situation
+
+      SELECT
+
+      COUNT(*) AS total_lignes,
+
+      COUNT(CASE WHEN t.family_situation IS NOT NULL
+
+      AND TRIM(t.family_situation) <> '''' THEN 1 END) AS valides,
+
+      COUNT(CASE WHEN t.family_situation IS NOT NULL
+
+      AND TRIM(t.family_situation) <> '''' THEN 1 END) * 100.0
+
+      / NULLIF(COUNT(*), 0) AS score_completude_pct
+
+      FROM VIRTUALISATION."staging-nova-referentieltiers".natural_person_description
+      t;'
+    used_by:
+    - natural_person_description.family_situation
+  69aa97d048f6:
+    sql: "SELECT\n  COUNT(*) AS total_lignes,\n  COUNT(CASE WHEN t.civility IS NOT\
+      \ NULL AND TRIM(t.civility) <> '' THEN 1 END) AS valides,\n  COUNT(CASE WHEN\
+      \ t.civility IS NOT NULL AND TRIM(t.civility) <> '' THEN 1 END) * 100.0 / NULLIF(COUNT(*),\
+      \ 0) AS score_completude_pct\nFROM VIRTUALISATION.\"staging-nova-referentieltiers\"\
+      .natural_person_description t;"
+    used_by:
+    - natural_person_description.civility
+  a671a530e69a:
+    sql: '-- Score Complétude — natural_person_description.civility
+
+      SELECT
+
+      COUNT(*) AS total_lignes,
+
+      COUNT(CASE WHEN t.civility IS NOT NULL
+
+      AND TRIM(t.civility) <> '''' THEN 1 END) AS valides,
+
+      COUNT(CASE WHEN t.civility IS NOT NULL
+
+      AND TRIM(t.civility) <> '''' THEN 1 END) * 100.0
+
+      / NULLIF(COUNT(*), 0) AS score_completude_pct
+
+      FROM VIRTUALISATION."staging-nova-referentieltiers".natural_person_description
+      t;'
+    used_by:
+    - natural_person_description.civility
+    - natural_person_description.civility
+  0e89f96df60f:
+    sql: "SELECT\n  COUNT(*) AS total_lignes,\n  COUNT(CASE WHEN t.birthdate IS NOT\
+      \ NULL AND TRIM(CAST(t.birthdate AS VARCHAR)) <> '' THEN 1 END) AS valides,\n\
+      \  COUNT(CASE WHEN t.birthdate IS NOT NULL AND TRIM(CAST(t.birthdate AS VARCHAR))\
+      \ <> '' THEN 1 END) * 100.0 / NULLIF(COUNT(*), 0) AS score_completude_pct\n\
+      FROM VIRTUALISATION.\"staging-nova-referentieltiers\".natural_person_description\
+      \ t;"
+    used_by:
+    - natural_person_description.birthdate
+  87b0c346a9e8:
+    sql: "SELECT\n  COUNT(*) AS total_lignes,\n  COUNT(CASE WHEN t.birth_country IS\
+      \ NOT NULL AND TRIM(t.birth_country) <> '' THEN 1 END) AS valides,\n  COUNT(CASE\
+      \ WHEN t.birth_country IS NOT NULL AND TRIM(t.birth_country) <> '' THEN 1 END)\
+      \ * 100.0 / NULLIF(COUNT(*), 0) AS score_completude_pct\nFROM VIRTUALISATION.\"\
+      staging-nova-referentieltiers\".natural_person_description t;"
+    used_by:
+    - natural_person_description.birth_country
+  9ffbbf6e552b:
+    sql: "SELECT\n  COUNT(*) AS total_lignes,\n  COUNT(CASE WHEN t.birth_city IS NOT\
+      \ NULL AND TRIM(t.birth_city) <> '' THEN 1 END) AS valides,\n  COUNT(CASE WHEN\
+      \ t.birth_city IS NOT NULL AND TRIM(t.birth_city) <> '' THEN 1 END) * 100.0\
+      \ / NULLIF(COUNT(*), 0) AS score_completude_pct\nFROM VIRTUALISATION.\"staging-nova-referentieltiers\"\
+      .natural_person_description t;"
+    used_by:
+    - natural_person_description.birth_city
+  d5dcdbb365e9:
+    sql: "SELECT\n  COUNT(*) AS total_lignes,\n  COUNT(t.turnover) AS valides,\n \
+      \ COUNT(t.turnover) * 100.0 / NULLIF(COUNT(*), 0) AS score_completude_pct\n\
+      FROM VIRTUALISATION.\"staging-nova-referentieltiers\".legal_entity_financial_data\
+      \ t;"
+    used_by:
+    - legal_entity_financial_data.turnover
+  d988ca7f64f8:
+    sql: "SELECT\n  COUNT(*) AS total_lignes,\n  COUNT(t.capital) AS valides,\n  COUNT(t.capital)\
+      \ * 100.0 / NULLIF(COUNT(*), 0) AS score_completude_pct\nFROM VIRTUALISATION.\"\
+      staging-nova-referentieltiers\".legal_entity_financial_data t;"
+    used_by:
+    - legal_entity_financial_data.capital
+  9430c99bcc3f:
+    sql: "SELECT\n  COUNT(*) AS total_lignes,\n  COUNT(CASE WHEN t.nationality_country\
+      \ IS NOT NULL AND TRIM(t.nationality_country) <> '' THEN 1 END) AS valides,\n\
+      \  COUNT(CASE WHEN t.nationality_country IS NOT NULL AND TRIM(t.nationality_country)\
+      \ <> '' THEN 1 END) * 100.0 / NULLIF(COUNT(*), 0) AS score_completude_pct\n\
+      FROM VIRTUALISATION.\"staging-nova-referentieltiers\".legal_entity_description\
+      \ t;"
+    used_by:
+    - legal_entity_description.nationality_country
+    - legal_entity_description.nationality_country
+  163935f9fe5c:
+    sql: "SELECT\n  COUNT(*) AS total_lignes,\n  COUNT(CASE WHEN t.domicile_country\
+      \ IS NOT NULL AND TRIM(t.domicile_country) <> '' THEN 1 END) AS valides,\n \
+      \ COUNT(CASE WHEN t.domicile_country IS NOT NULL AND TRIM(t.domicile_country)\
+      \ <> '' THEN 1 END) * 100.0 / NULLIF(COUNT(*), 0) AS score_completude_pct\n\
+      FROM VIRTUALISATION.\"staging-nova-referentieltiers\".legal_entity_description\
+      \ t;"
+    used_by:
+    - legal_entity_description.domicile_country
+    - legal_entity_description.domicile_country
+  aa6b7cbe5f83:
+    sql: '-- Score Complétude — legal_entity_description.creation_date
+
+      SELECT
+
+      COUNT(*) AS total_lignes,
+
+      COUNT(t.creation_date) AS valides,
+
+      COUNT(t.creation_date) * 100.0 / NULLIF(COUNT(*), 0) AS score_completude_pct
+
+      FROM VIRTUALISATION."staging-nova-referentieltiers".legal_entity_description
+      t;'
+    used_by:
+    - legal_entity_description.creation_date
+  0f4ee460b27c:
+    sql: '-- Score Complétude — legal_entity_description.corporate_name
+
+      SELECT
+
+      COUNT(*) AS total_lignes,
+
+      COUNT(CASE WHEN t.corporate_name IS NOT NULL
+
+      AND TRIM(t.corporate_name) <> '''' THEN 1 END) AS valides,
+
+      COUNT(CASE WHEN t.corporate_name IS NOT NULL
+
+      AND TRIM(t.corporate_name) <> '''' THEN 1 END) * 100.0
+
+      / NULLIF(COUNT(*), 0) AS score_completude_pct
+
+      FROM VIRTUALISATION."staging-nova-referentieltiers".legal_entity_description
+      t;'
+    used_by:
+    - legal_entity_description.corporate_name
+  7f20313fe62f:
+    sql: '-- Score Complétude — customers.customer_type
+
+      SELECT
+
+      COUNT(*) AS total_lignes,
+
+      COUNT(CASE WHEN t.customer_type IS NOT NULL
+
+      AND TRIM(t.customer_type) <> '''' THEN 1 END) AS valides,
+
+      COUNT(CASE WHEN t.customer_type IS NOT NULL
+
+      AND TRIM(t.customer_type) <> '''' THEN 1 END) * 100.0
+
+      / NULLIF(COUNT(*), 0) AS score_completude_pct
+
+      FROM VIRTUALISATION."staging-nova-referentieltiers".customers t;'
+    used_by:
+    - customers.customer_type
+    - customers.customer_type
+  6b0e7702df64:
+    sql: '-- Score Complétude — customers.customer_number (rôle radical_professional)
+
+      SELECT
+
+      COUNT(*) AS total_lignes,
+
+      COUNT(CASE WHEN t.customer_number IS NOT NULL
+
+      AND TRIM(t.customer_number) <> '''' THEN 1 END) AS valides,
+
+      COUNT(CASE WHEN t.customer_number IS NOT NULL
+
+      AND TRIM(t.customer_number) <> '''' THEN 1 END) * 100.0
+
+      / NULLIF(COUNT(*), 0) AS score_completude_pct
+
+      FROM VIRTUALISATION."staging-nova-referentieltiers".customers t
+
+      INNER JOIN VIRTUALISATION."staging-nova-referentieltiers".professional p
+
+      ON t.identifier = p.identifier;'
+    used_by:
+    - customers.customer_number
+  ac4bbd288480:
+    sql: '-- Score Complétude — customers.customer_number (rôle radical_personnes_physique)
+
+      SELECT
+
+      COUNT(*) AS total_lignes,
+
+      COUNT(CASE WHEN t.customer_number IS NOT NULL
+
+      AND TRIM(t.customer_number) <> '''' THEN 1 END) AS valides,
+
+      COUNT(CASE WHEN t.customer_number IS NOT NULL
+
+      AND TRIM(t.customer_number) <> '''' THEN 1 END) * 100.0
+
+      / NULLIF(COUNT(*), 0) AS score_completude_pct
+
+      FROM VIRTUALISATION."staging-nova-referentieltiers".customers t
+
+      INNER JOIN VIRTUALISATION."staging-nova-referentieltiers".natural_person np
+
+      ON t.identifier = np.identifier;'
+    used_by:
+    - customers.customer_number
+  11aa97bac464:
+    sql: '-- Score Complétude — customer_job.socioprofessional_category
+
+      SELECT
+
+      COUNT(*) AS total_lignes,
+
+      COUNT(CASE WHEN t.socioprofessional_category IS NOT NULL
+
+      AND TRIM(t.socioprofessional_category) <> '''' THEN 1 END) AS valides,
+
+      COUNT(CASE WHEN t.socioprofessional_category IS NOT NULL
+
+      AND TRIM(t.socioprofessional_category) <> '''' THEN 1 END) * 100.0
+
+      / NULLIF(COUNT(*), 0) AS score_completude_pct
+
+      FROM VIRTUALISATION."staging-nova-referentieltiers".customer_job t;'
+    used_by:
+    - customer_job.socioprofessional_category
+  c4451d7eb19b:
+    sql: '-- Score Complétude — customer_job.professional_situation
+
+      SELECT
+
+      COUNT(*) AS total_lignes,
+
+      COUNT(CASE WHEN t.professional_situation IS NOT NULL
+
+      AND TRIM(t.professional_situation) <> '''' THEN 1 END) AS valides,
+
+      COUNT(CASE WHEN t.professional_situation IS NOT NULL
+
+      AND TRIM(t.professional_situation) <> '''' THEN 1 END) * 100.0
+
+      / NULLIF(COUNT(*), 0) AS score_completude_pct
+
+      FROM VIRTUALISATION."staging-nova-referentieltiers".customer_job t;'
+    used_by:
+    - customer_job.professional_situation
+  8f9cfffd9079:
+    sql: '-- Score Complétude — customer_job.professional_sector
+
+      SELECT
+
+      COUNT(*) AS total_lignes,
+
+      COUNT(CASE WHEN t.professional_sector IS NOT NULL
+
+      AND TRIM(t.professional_sector) <> '''' THEN 1 END) AS valides,
+
+      COUNT(CASE WHEN t.professional_sector IS NOT NULL
+
+      AND TRIM(t.professional_sector) <> '''' THEN 1 END) * 100.0
+
+      / NULLIF(COUNT(*), 0) AS score_completude_pct
+
+      FROM VIRTUALISATION."staging-nova-referentieltiers".customer_job t;'
+    used_by:
+    - customer_job.professional_sector
+  dd31e1d2068e:
+    sql: '-- Score Complétude — customer_job.occupation
+
+      SELECT
+
+      COUNT(*) AS total_lignes,
+
+      COUNT(CASE WHEN t.occupation IS NOT NULL
+
+      AND TRIM(t.occupation) <> '''' THEN 1 END) AS valides,
+
+      COUNT(CASE WHEN t.occupation IS NOT NULL
+
+      AND TRIM(t.occupation) <> '''' THEN 1 END) * 100.0
+
+      / NULLIF(COUNT(*), 0) AS score_completude_pct
+
+      FROM VIRTUALISATION."staging-nova-referentieltiers".customer_job t;'
+    used_by:
+    - customer_job.occupation
+  b9336db01b86:
+    sql: '-- Score Complétude — customer_job.employer
+
+      SELECT
+
+      COUNT(*) AS total_lignes,
+
+      COUNT(CASE WHEN t.employer IS NOT NULL
+
+      AND TRIM(t.employer) <> '''' THEN 1 END) AS valides,
+
+      COUNT(CASE WHEN t.employer IS NOT NULL
+
+      AND TRIM(t.employer) <> '''' THEN 1 END) * 100.0
+
+      / NULLIF(COUNT(*), 0) AS score_completude_pct
+
+      FROM VIRTUALISATION."staging-nova-referentieltiers".customer_job t;'
+    used_by:
+    - customer_job.employer
+  2358b1395eb4:
+    sql: "SELECT\n  COUNT(*) AS total_lignes,\n  COUNT(CASE WHEN t.main IS NOT NULL\
+      \ AND TRIM(t.main) <> '' THEN 1 END) AS valides,\n  COUNT(CASE WHEN t.main IS\
+      \ NOT NULL AND TRIM(t.main) <> '' THEN 1 END) * 100.0 / NULLIF(COUNT(*), 0)\
+      \ AS score_completude_pct\nFROM VIRTUALISATION.\"staging-nova-referentieltiers\"\
+      .customer_activity t;"
+    used_by:
+    - customer_activity.main
+  87a146e59e84:
+    sql: "SELECT\n  COUNT(*) AS total_lignes,\n  COUNT(CASE WHEN t.branch IS NOT NULL\
+      \ AND TRIM(t.branch) <> '' THEN 1 END) AS valides,\n  COUNT(CASE WHEN t.branch\
+      \ IS NOT NULL AND TRIM(t.branch) <> '' THEN 1 END) * 100.0 / NULLIF(COUNT(*),\
+      \ 0) AS score_completude_pct\nFROM VIRTUALISATION.\"staging-nova-referentieltiers\"\
+      .customer_activity t;"
+    used_by:
+    - customer_activity.branch
+  1ab2130a6e75:
+    sql: "SELECT\n  COUNT(*) AS total_lignes,\n  COUNT(CASE WHEN t.ape_code IS NOT\
+      \ NULL AND TRIM(t.ape_code) <> '' THEN 1 END) AS valides,\n  COUNT(CASE WHEN\
+      \ t.ape_code IS NOT NULL AND TRIM(t.ape_code) <> '' THEN 1 END) * 100.0 / NULLIF(COUNT(*),\
+      \ 0) AS score_completude_pct\nFROM VIRTUALISATION.\"staging-nova-referentieltiers\"\
+      .customer_activity t;"
+    used_by:
+    - customer_activity.ape_code
+  d0c95a45527c:
+    sql: "SELECT\n  COUNT(*) AS total_lignes,\n  COUNT(CASE WHEN t.gendre IS NOT NULL\
+      \ AND TRIM(t.gendre) <> '' THEN 1 END) AS valides,\n  COUNT(CASE WHEN t.gendre\
+      \ IS NOT NULL AND TRIM(t.gendre) <> '' THEN 1 END) * 100.0 / NULLIF(COUNT(*),\
+      \ 0) AS score_completude_pct\nFROM VIRTUALISATION.\"staging-nova-referentieltiers\"\
+      .company_shareholders t;"
+    used_by:
+    - company_shareholders.gendre
+  5df17b8df8be:
+    sql: "SELECT\n  COUNT(*) AS total_lignes,\n  COUNT(CASE WHEN t.birthdate IS NOT\
+      \ NULL AND TRIM(CAST(t.birthdate AS VARCHAR)) <> '' THEN 1 END) AS valides,\n\
+      \  COUNT(CASE WHEN t.birthdate IS NOT NULL AND TRIM(CAST(t.birthdate AS VARCHAR))\
+      \ <> '' THEN 1 END) * 100.0 / NULLIF(COUNT(*), 0) AS score_completude_pct\n\
+      FROM VIRTUALISATION.\"staging-nova-referentieltiers\".company_shareholders t;"
+    used_by:
+    - company_shareholders.birthdate
+  9dcb29f94032:
+    sql: "SELECT\n  COUNT(*) AS total_lignes,\n  COUNT(CASE WHEN t.complete_adress\
+      \ IS NOT NULL AND TRIM(t.complete_adress) <> '' THEN 1 END) AS valides,\n  COUNT(CASE\
+      \ WHEN t.complete_adress IS NOT NULL AND TRIM(t.complete_adress) <> '' THEN\
+      \ 1 END) * 100.0\n    / NULLIF(COUNT(*), 0) AS score_completude_pct\nFROM VIRTUALISATION.\"\
+      staging-nova-referentieltiers\".customer_mail t;"
+    used_by:
+    - customer_mail.complete_adress
+  f53a396abb15:
+    sql: "SELECT\n  COUNT(*) AS total_lignes,\n  COUNT(CASE WHEN t.zip_code IS NOT\
+      \ NULL AND TRIM(t.zip_code) <> '' THEN 1 END) AS valides,\n  COUNT(CASE WHEN\
+      \ t.zip_code IS NOT NULL AND TRIM(t.zip_code) <> '' THEN 1 END) * 100.0\n  \
+      \  / NULLIF(COUNT(*), 0) AS score_completude_pct\nFROM VIRTUALISATION.\"staging-nova-referentieltiers\"\
+      .customer_mail t;"
+    used_by:
+    - customer_mail.zip_code
+  3afbd771c0fa:
+    sql: "SELECT\n  COUNT(*) AS total_lignes,\n  COUNT(CASE WHEN t.city IS NOT NULL\
+      \ AND TRIM(t.city) <> '' THEN 1 END) AS valides,\n  COUNT(CASE WHEN t.city IS\
+      \ NOT NULL AND TRIM(t.city) <> '' THEN 1 END) * 100.0\n    / NULLIF(COUNT(*),\
+      \ 0) AS score_completude_pct\nFROM VIRTUALISATION.\"staging-nova-referentieltiers\"\
+      .customer_mail t;"
+    used_by:
+    - customer_mail.city
+  089a8c56d285:
+    sql: "SELECT\n  COUNT(*) AS total_lignes,\n  COUNT(CASE WHEN t.country_code IS\
+      \ NOT NULL AND TRIM(t.country_code) <> '' THEN 1 END) AS valides,\n  COUNT(CASE\
+      \ WHEN t.country_code IS NOT NULL AND TRIM(t.country_code) <> '' THEN 1 END)\
+      \ * 100.0\n    / NULLIF(COUNT(*), 0) AS score_completude_pct\nFROM VIRTUALISATION.\"\
+      staging-nova-referentieltiers\".customer_mail t;"
+    used_by:
+    - customer_mail.country_code
+  ca0d53261a8d:
+    sql: "SELECT\n  COUNT(*) AS total_lignes,\n  COUNT(CASE WHEN t.user_identifier\
+      \ IS NOT NULL AND TRIM(t.user_identifier) <> '' THEN 1 END) AS valides,\n  COUNT(CASE\
+      \ WHEN t.user_identifier IS NOT NULL AND TRIM(t.user_identifier) <> '' THEN\
+      \ 1 END) * 100.0\n    / NULLIF(COUNT(*), 0) AS score_completude_pct\nFROM VIRTUALISATION.\"\
+      staging-nova-referentieltiers\".customer_creation_context t;"
+    used_by:
+    - customer_creation_context.user_identifier
+    - customer_creation_context.user_identifier
+  6180a33a7d32:
+    sql: "SELECT\n  COUNT(*) AS total_lignes,\n  COUNT(CASE WHEN t.segment_number\
+      \ IS NOT NULL AND TRIM(t.segment_number) <> '' THEN 1 END) AS valides,\n  COUNT(CASE\
+      \ WHEN t.segment_number IS NOT NULL AND TRIM(t.segment_number) <> '' THEN 1\
+      \ END) * 100.0\n    / NULLIF(COUNT(*), 0) AS score_completude_pct\nFROM VIRTUALISATION.\"\
+      staging-nova-referentieltiers\".customer_segmentation t;"
+    used_by:
+    - customer_segmentation.segment_number

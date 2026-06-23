@@ -1,0 +1,66 @@
+﻿table: customer_job
+run_timestamp: '2026-06-15T09:57:37'
+total_lignes: 4562684
+table_score_pct: 53.02
+table_flag: FAIL
+columns:
+- dremio_col: code_categorie_socio_professionelle
+  virt_col: socioprofessional_category
+  virt_full_path: VIRTUALISATION.staging-nova-referentieltiers.customer_job.socioprofessional_category
+  dataset: CIHOne.CLIENTS.Personnes_Physiques.clients
+  domain: PTP-TIE-POR
+  rule: Completude
+  total_lignes: 4562684
+  valides: 2091057
+  score_pct: 45.83
+  flag: FAIL
+  error: null
+  timestamp: '2026-06-15T09:57:37'
+- dremio_col: situation_professionelle
+  virt_col: professional_situation
+  virt_full_path: VIRTUALISATION.staging-nova-referentieltiers.customer_job.professional_situation
+  dataset: CIHOne.CLIENTS.Personnes_Physiques.clients
+  domain: PTP-TIE-POR
+  rule: Completude
+  total_lignes: 4562684
+  valides: 4562684
+  score_pct: 100.0
+  flag: PASS
+  error: null
+  timestamp: '2026-06-15T09:57:37'
+- dremio_col: code_secteur_professionel
+  virt_col: professional_sector
+  virt_full_path: VIRTUALISATION.staging-nova-referentieltiers.customer_job.professional_sector
+  dataset: CIHOne.CLIENTS.Personnes_Physiques.clients
+  domain: PTP-TIE-POR
+  rule: Completude
+  total_lignes: 4562684
+  valides: 2091110
+  score_pct: 45.83
+  flag: FAIL
+  error: null
+  timestamp: '2026-06-15T09:57:37'
+- dremio_col: code_profession
+  virt_col: occupation
+  virt_full_path: VIRTUALISATION.staging-nova-referentieltiers.customer_job.occupation
+  dataset: CIHOne.CLIENTS.Personnes_Physiques.clients
+  domain: PTP-TIE-POR
+  rule: Completude
+  total_lignes: 4562684
+  valides: 2091100
+  score_pct: 45.83
+  flag: FAIL
+  error: null
+  timestamp: '2026-06-15T09:57:37'
+- dremio_col: employeur
+  virt_col: employer
+  virt_full_path: VIRTUALISATION.staging-nova-referentieltiers.customer_job.employer
+  dataset: CIHOne.CLIENTS.Personnes_Physiques.clients
+  domain: PTP-TIE-POR
+  rule: Completude
+  total_lignes: 4562684
+  valides: 1260334
+  score_pct: 27.62
+  flag: FAIL
+  error: null
+  timestamp: '2026-06-15T09:57:37'

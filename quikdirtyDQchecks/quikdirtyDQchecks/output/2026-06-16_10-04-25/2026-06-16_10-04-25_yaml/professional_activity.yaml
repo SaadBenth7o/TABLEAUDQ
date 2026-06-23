@@ -1,0 +1,30 @@
+table: professional_activity
+run_timestamp: '2026-06-16T10:04:29'
+total_lignes: 29567
+table_score_pct: 100.0
+table_flag: PASS
+columns:
+- dremio_col: code_secteur_activite
+  virt_col: activity_code
+  virt_full_path: VIRTUALISATION.staging-nova-referentieltiers.professional_activity.activity_code
+  dataset: CIHOne.CLIENTS.Professionnels.clients
+  domain: PTP-TIE-POR
+  rule: Complétude
+  total_lignes: 29567
+  valides: 29567
+  score_pct: 100.0
+  flag: PASS
+  error: null
+  timestamp: '2026-06-16T10:04:29'
+- dremio_col: branche_activite
+  virt_col: activity_branch
+  virt_full_path: VIRTUALISATION.staging-nova-referentieltiers.professional_activity.activity_branch
+  dataset: CIHOne.CLIENTS.Professionnels.clients
+  domain: PTP-TIE-POR
+  rule: Complétude
+  total_lignes: 29567
+  valides: 29567
+  score_pct: 100.0
+  flag: PASS
+  error: null
+  timestamp: '2026-06-16T10:04:29'

@@ -1,0 +1,5 @@
+dremio_col,virt_full_path,dataset,domain,rule,total_lignes,valides,score_pct,flag,error,timestamp
+chiffre_affaire,VIRTUALISATION.staging-nova-referentieltiers.professional_description.turnover,CIHOne.CLIENTS.Professionnels.clients,PTP-TIE-POR,Complétude,0,0,N/A,ERROR,Query returned no data,2026-06-22T10:40:13
+raison_sociale,VIRTUALISATION.staging-nova-referentieltiers.professional_description.company_name,CIHOne.CLIENTS.Professionnels.clients,PTP-TIE-POR,Complétude,0,0,N/A,ERROR,Query returned no data,2026-06-22T10:40:13
+company_name,VIRTUALISATION.staging-nova-referentieltiers.professional_description.company_name,CIHOne.CLIENTS.Professionnels.relations_professional_personnes_physiques,PTP-TIE-POR,Complétude,0,0,N/A,ERROR,Query returned no data,2026-06-22T10:40:13
+capital,VIRTUALISATION.staging-nova-referentieltiers.professional_description.capital,CIHOne.CLIENTS.Professionnels.clients,PTP-TIE-POR,Complétude,0,0,N/A,ERROR,Query returned no data,2026-06-22T10:40:13

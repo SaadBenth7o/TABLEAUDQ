@@ -1,0 +1,4 @@
+﻿dremio_col,virt_full_path,dataset,domain,rule,total_lignes,valides,score_pct,flag,error,timestamp
+type_secteur_activite,VIRTUALISATION.staging-nova-referentieltiers.customer_activity.main,CIHOne.CLIENTS.Personnes_Morales.clients,PTP-TIE-POR,Completude,91876,91876,100.00,PASS,,2026-06-12T09:31:16
+branche_activite,VIRTUALISATION.staging-nova-referentieltiers.customer_activity.branch,CIHOne.CLIENTS.Personnes_Morales.clients,PTP-TIE-POR,Completude,91876,91876,100.00,PASS,,2026-06-12T09:31:16
+identifiant_fatca,VIRTUALISATION.staging-nova-referentieltiers.customer_activity.ape_code,CIHOne.CLIENTS.Personnes_Morales.clients,PTP-TIE-POR,Completude,91876,91876,100.00,PASS,,2026-06-12T09:31:16

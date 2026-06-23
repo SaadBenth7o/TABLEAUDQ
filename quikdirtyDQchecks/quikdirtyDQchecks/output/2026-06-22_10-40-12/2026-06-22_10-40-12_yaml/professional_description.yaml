@@ -1,0 +1,54 @@
+table: professional_description
+run_timestamp: '2026-06-22T10:40:13'
+total_lignes: null
+table_score_pct: 0.0
+table_flag: FAIL
+columns:
+- dremio_col: chiffre_affaire
+  virt_col: turnover
+  virt_full_path: VIRTUALISATION.staging-nova-referentieltiers.professional_description.turnover
+  dataset: CIHOne.CLIENTS.Professionnels.clients
+  domain: PTP-TIE-POR
+  rule: Complétude
+  total_lignes: null
+  valides: null
+  score_pct: null
+  flag: ERROR
+  error: Query returned no data
+  timestamp: '2026-06-22T10:40:13'
+- dremio_col: raison_sociale
+  virt_col: company_name
+  virt_full_path: VIRTUALISATION.staging-nova-referentieltiers.professional_description.company_name
+  dataset: CIHOne.CLIENTS.Professionnels.clients
+  domain: PTP-TIE-POR
+  rule: Complétude
+  total_lignes: null
+  valides: null
+  score_pct: null
+  flag: ERROR
+  error: Query returned no data
+  timestamp: '2026-06-22T10:40:13'
+- dremio_col: company_name
+  virt_col: company_name
+  virt_full_path: VIRTUALISATION.staging-nova-referentieltiers.professional_description.company_name
+  dataset: CIHOne.CLIENTS.Professionnels.relations_professional_personnes_physiques
+  domain: PTP-TIE-POR
+  rule: Complétude
+  total_lignes: null
+  valides: null
+  score_pct: null
+  flag: ERROR
+  error: Query returned no data
+  timestamp: '2026-06-22T10:40:13'
+- dremio_col: capital
+  virt_col: capital
+  virt_full_path: VIRTUALISATION.staging-nova-referentieltiers.professional_description.capital
+  dataset: CIHOne.CLIENTS.Professionnels.clients
+  domain: PTP-TIE-POR
+  rule: Complétude
+  total_lignes: null
+  valides: null
+  score_pct: null
+  flag: ERROR
+  error: Query returned no data
+  timestamp: '2026-06-22T10:40:13'

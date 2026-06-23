@@ -1,0 +1,3 @@
+﻿dremio_col,virt_full_path,dataset,domain,rule,total_lignes,valides,score_pct,flag,error,timestamp
+code_secteur_activite,VIRTUALISATION.staging-nova-referentieltiers.professional_activity.activity_code,CIHOne.CLIENTS.Professionnels.clients,PTP-TIE-POR,Completude,29507,29507,100.00,PASS,,2026-06-08T10:53:49
+branche_activite,VIRTUALISATION.staging-nova-referentieltiers.professional_activity.activity_branch,CIHOne.CLIENTS.Professionnels.clients,PTP-TIE-POR,Completude,29507,29507,100.00,PASS,,2026-06-08T10:53:49

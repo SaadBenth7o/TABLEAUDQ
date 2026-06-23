@@ -1,0 +1,5 @@
+dremio_col,virt_full_path,dataset,domain,rule,total_lignes,valides,score_pct,flag,error,timestamp
+chiffre_affaire,VIRTUALISATION.staging-nova-referentieltiers.professional_description.turnover,CIHOne.CLIENTS.Professionnels.clients,PTP-TIE-POR,Complétude,29610,21208,71.62,WARN,,2026-06-19T14:28:08
+raison_sociale,VIRTUALISATION.staging-nova-referentieltiers.professional_description.company_name,CIHOne.CLIENTS.Professionnels.clients,PTP-TIE-POR,Complétude,29610,29610,100.00,PASS,,2026-06-19T14:28:08
+company_name,VIRTUALISATION.staging-nova-referentieltiers.professional_description.company_name,CIHOne.CLIENTS.Professionnels.relations_professional_personnes_physiques,PTP-TIE-POR,Complétude,29610,29610,100.00,PASS,,2026-06-19T14:28:08
+capital,VIRTUALISATION.staging-nova-referentieltiers.professional_description.capital,CIHOne.CLIENTS.Professionnels.clients,PTP-TIE-POR,Complétude,29610,0,0.00,FAIL,,2026-06-19T14:28:08

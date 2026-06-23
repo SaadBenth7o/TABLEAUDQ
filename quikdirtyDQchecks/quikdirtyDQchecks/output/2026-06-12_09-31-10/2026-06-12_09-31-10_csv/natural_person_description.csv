@@ -1,0 +1,14 @@
+﻿dremio_col,virt_full_path,dataset,domain,rule,total_lignes,valides,score_pct,flag,error,timestamp
+code_pays_de_residence,VIRTUALISATION.staging-nova-referentieltiers.natural_person_description.residence_country,CIHOne.CLIENTS.Personnes_Physiques.clients,PTP-TIE-POR,Completude,4615193,4608197,99.85,PASS,,2026-06-12T09:31:16
+code_pays_de_residence,VIRTUALISATION.staging-nova-referentieltiers.natural_person_description.residence_country,CIHOne.CLIENTS.Professionnels.clients,PTP-TIE-POR,Completude,4615193,4608197,99.85,PASS,,2026-06-12T09:31:16
+nombre_d_enfants,VIRTUALISATION.staging-nova-referentieltiers.natural_person_description.number_of_child,CIHOne.CLIENTS.Personnes_Physiques.clients,PTP-TIE-POR,Completude,4615193,4608517,99.86,PASS,,2026-06-12T09:31:16
+code_pays_de_nationalite,VIRTUALISATION.staging-nova-referentieltiers.natural_person_description.nationality_country,CIHOne.CLIENTS.Personnes_Physiques.clients,PTP-TIE-POR,Completude,4615193,4606555,99.81,PASS,,2026-06-12T09:31:16
+code_pays_de_nationalite,VIRTUALISATION.staging-nova-referentieltiers.natural_person_description.nationality_country,CIHOne.CLIENTS.Professionnels.clients,PTP-TIE-POR,Completude,4615193,4606555,99.81,PASS,,2026-06-12T09:31:16
+genre,VIRTUALISATION.staging-nova-referentieltiers.natural_person_description.gender,CIHOne.CLIENTS.Personnes_Physiques.clients,PTP-TIE-POR,Completude,4615193,4610743,99.90,PASS,,2026-06-12T09:31:16
+situation_familiale,VIRTUALISATION.staging-nova-referentieltiers.natural_person_description.family_situation,CIHOne.CLIENTS.Personnes_Physiques.clients,PTP-TIE-POR,Completude,4615193,4598229,99.63,PASS,,2026-06-12T09:31:16
+civilite,VIRTUALISATION.staging-nova-referentieltiers.natural_person_description.civility,CIHOne.CLIENTS.Personnes_Physiques.clients,PTP-TIE-POR,Completude,4615193,4613177,99.96,PASS,,2026-06-12T09:31:16
+nom_gerant,VIRTUALISATION.staging-nova-referentieltiers.natural_person_description.civility,CIHOne.CLIENTS.Personnes_Morales.gerants,PTP-TIE-POR,Completude,4615193,4613177,99.96,PASS,,2026-06-12T09:31:16
+nom_personnes_physique,VIRTUALISATION.staging-nova-referentieltiers.natural_person_description.civility,CIHOne.CLIENTS.Professionnels.relations_professional_personnes_physiques,PTP-TIE-POR,Completude,4615193,4613177,99.96,PASS,,2026-06-12T09:31:16
+date_de_naissance,VIRTUALISATION.staging-nova-referentieltiers.natural_person_description.birthdate,CIHOne.CLIENTS.Personnes_Physiques.clients,PTP-TIE-POR,Completude,4615193,4608516,99.86,PASS,,2026-06-12T09:31:16
+pays_de_naissance,VIRTUALISATION.staging-nova-referentieltiers.natural_person_description.birth_country,CIHOne.CLIENTS.Personnes_Physiques.clients,PTP-TIE-POR,Completude,4615193,4606466,99.81,PASS,,2026-06-12T09:31:16
+ville_de_naissance,VIRTUALISATION.staging-nova-referentieltiers.natural_person_description.birth_city,CIHOne.CLIENTS.Personnes_Physiques.clients,PTP-TIE-POR,Completude,4615193,4000035,86.67,WARN,,2026-06-12T09:31:16

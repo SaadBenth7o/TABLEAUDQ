@@ -1,0 +1,5 @@
+﻿dremio_col,virt_full_path,dataset,domain,rule,total_lignes,valides,score_pct,flag,error,timestamp
+type_client,VIRTUALISATION.staging-nova-referentieltiers.customers.customer_type,CIHOne.CLIENTS.Personnes_Physiques.clients,PTP-TIE-POR,Completude,4736027,4736027,100.00,PASS,,2026-06-12T09:31:16
+type_client,VIRTUALISATION.staging-nova-referentieltiers.customers.customer_type,CIHOne.CLIENTS.Professionnels.clients,PTP-TIE-POR,Completude,4736027,4736027,100.00,PASS,,2026-06-12T09:31:16
+radical_professional,VIRTUALISATION.staging-nova-referentieltiers.customers.customer_number,CIHOne.CLIENTS.Professionnels.relations_professional_personnes_physiques,PTP-TIE-POR,Completude,29551,29551,100.00,PASS,,2026-06-12T09:31:16
+radical_personnes_physique,VIRTUALISATION.staging-nova-referentieltiers.customers.customer_number,CIHOne.CLIENTS.Professionnels.relations_professional_personnes_physiques,PTP-TIE-POR,Completude,4615194,4615194,100.00,PASS,,2026-06-12T09:31:16

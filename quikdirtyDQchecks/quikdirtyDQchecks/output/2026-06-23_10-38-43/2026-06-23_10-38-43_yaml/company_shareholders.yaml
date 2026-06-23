@@ -1,0 +1,30 @@
+table: company_shareholders
+run_timestamp: '2026-06-23T10:38:44'
+total_lignes: null
+table_score_pct: 0.0
+table_flag: FAIL
+columns:
+- dremio_col: genre
+  virt_col: gendre
+  virt_full_path: VIRTUALISATION.staging-nova-referentieltiers.company_shareholders.gendre
+  dataset: CIHOne.CLIENTS.Personnes_Morales.associes
+  domain: PTP-TIE-POR
+  rule: Complétude
+  total_lignes: null
+  valides: null
+  score_pct: null
+  flag: ERROR
+  error: Query returned no data
+  timestamp: '2026-06-23T10:38:44'
+- dremio_col: date_naissance
+  virt_col: birthdate
+  virt_full_path: VIRTUALISATION.staging-nova-referentieltiers.company_shareholders.birthdate
+  dataset: CIHOne.CLIENTS.Personnes_Morales.associes
+  domain: PTP-TIE-POR
+  rule: Complétude
+  total_lignes: null
+  valides: null
+  score_pct: null
+  flag: ERROR
+  error: Query returned no data
+  timestamp: '2026-06-23T10:38:44'
